@@ -111,6 +111,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DIFFEVO.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="TConjugate_Gradient.cpp" />
+    <ClCompile Include="TFuzzy.cpp" />
+    <ClCompile Include="TGa.cpp" />
+    <ClCompile Include="TGAPopulation.cpp" />
+    <ClCompile Include="TGASetting.cpp" />
+    <ClCompile Include="TGenotype.cpp" />
+    <ClCompile Include="TGp.cpp" />
+    <ClCompile Include="TNode.cpp" />
+    <ClCompile Include="TPopulation.cpp" />
+    <ClCompile Include="TSetting.cpp" />
+    <ClCompile Include="TTree.cpp" />
+    <ClCompile Include="TTruck.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DIFFEVO.h" />
+    <ClInclude Include="Functions.h" />
+    <ClInclude Include="TConjugate_Gradient.h" />
+    <ClInclude Include="TemplateGP.h" />
+    <ClInclude Include="TemplateNode.h" />
+    <ClInclude Include="TemplatePopulation.h" />
+    <ClInclude Include="TemplateTREE.h" />
+    <ClInclude Include="TFuzzy.h" />
+    <ClInclude Include="TGa.h" />
+    <ClInclude Include="TGAPopulation.h" />
+    <ClInclude Include="TGASetting.h" />
+    <ClInclude Include="TGenotype.h" />
+    <ClInclude Include="TGp.h" />
+    <ClInclude Include="TNode.h" />
+    <ClInclude Include="TPopulation.h" />
+    <ClInclude Include="TSetting.h" />
+    <ClInclude Include="TTree.h" />
+    <ClInclude Include="TTruck.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
