@@ -48,7 +48,7 @@ string TTree_symbolic::Get_formula() {
 	return node[0][0].Get_formula(node[0][0].Get_symbol());
 }
 inline double TTree_symbolic::Get_result(double *gvar) {
-	return node[0][0].Get_value(gvar);
+	return node[0][0].Get_result(gvar);
 }
 void TTree_symbolic::Mutate(int type_of_mutation, double probability_of_mutation) {
 	double ran = 0;

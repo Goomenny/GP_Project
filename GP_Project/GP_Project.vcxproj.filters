@@ -71,9 +71,6 @@
     <ClInclude Include="TemplateGP.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="TemplateNode.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="TemplatePopulation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>

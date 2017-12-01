@@ -131,7 +131,6 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="TConjugate_Gradient.h" />
     <ClInclude Include="TemplateGP.h" />
-    <ClInclude Include="TemplateNode.h" />
     <ClInclude Include="TemplatePopulation.h" />
     <ClInclude Include="TemplateTREE.h" />
     <ClInclude Include="TFuzzy.h" />

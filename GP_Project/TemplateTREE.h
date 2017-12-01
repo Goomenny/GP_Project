@@ -280,7 +280,7 @@ void TTree<Node>::Init(int gmaxdeep, int gn_var, int growth, int inheriters) {
 	node = new Node *[max_deep];
 	n_node[0] = 1; //на 1 слое всегда 1 узел(корень)
 	node[0] = new Node[1];  //Создаем корень
-	node[0][0].Init(true, rand() % 2, n_var, inheriters);
+	node[0][0].Init(true, rand() % 4, n_var, inheriters);
 	node[0][0].Set_num_layer(0);
 	node[0][0].Set_num_self(0);
 	node[0][0].Set_index("0");
