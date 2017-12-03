@@ -12,19 +12,19 @@ private:
 
 	
 
-	double meansquare; //Квадратичная ошибка
+	double meansquare; //РљРІР°РґСЂР°С‚РёС‡РЅР°СЏ РѕС€РёР±РєР°
 
 public:
 	TTree_symbolic();
 	~TTree_symbolic();
-	TTree_symbolic(const TTree_symbolic &); //Копиконструктор
-	//TTree_symbolic& operator=(const TTree_symbolic &); //Копирование дерева
+	TTree_symbolic(const TTree_symbolic &); //РљРѕРїРёРєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+	//TTree_symbolic& operator=(const TTree_symbolic &); //РљРѕРїРёСЂРѕРІР°РЅРёРµ РґРµСЂРµРІР°
 
-	void Calculate_fitness(double **, double *, int, double); //Установить пригодность дерева (выборка и размер выборки)
-	void Mutate(int, double); //Мутировать с вероятностью
-	string Get_formula(); // Получить формулу дерева через рекурсии
+	void Calculate_fitness(double **, double *, int, double); //РЈСЃС‚Р°РЅРѕРІРёС‚СЊ РїСЂРёРіРѕРґРЅРѕСЃС‚СЊ РґРµСЂРµРІР° (РІС‹Р±РѕСЂРєР° Рё СЂР°Р·РјРµСЂ РІС‹Р±РѕСЂРєРё)
+	void Mutate(int, double); //РњСѓС‚РёСЂРѕРІР°С‚СЊ СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ
+	string Get_formula(); // РџРѕР»СѓС‡РёС‚СЊ С„РѕСЂРјСѓР»Сѓ РґРµСЂРµРІР° С‡РµСЂРµР· СЂРµРєСѓСЂСЃРёРё
 	double Get_meansquare();
-	inline double Get_result(double *); 	//Получить значение дерева через рекурсии регрессия
+	inline double Get_result(double *); 	//РџРѕР»СѓС‡РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ РґРµСЂРµРІР° С‡РµСЂРµР· СЂРµРєСѓСЂСЃРёРё СЂРµРіСЂРµСЃСЃРёСЏ
 
 	void Set(double i) { x = i * 3; }
 	double Get() { return x; }
@@ -37,21 +37,21 @@ class TTree_fuzzy : public TTree<TNode_symbolic>
 {
 
 private:
-	vector< vector<int> > rules; //База правил
+	vector< vector<int> > rules; //Р‘Р°Р·Р° РїСЂР°РІРёР»
 
 	double x = 7;
 
 public:
 	TTree_fuzzy();
 	~TTree_fuzzy();
-	TTree_fuzzy(const TTree_fuzzy &); //Копиконструктор
-	TTree_fuzzy& operator=(const TTree_fuzzy &); //Копирование дерева
+	TTree_fuzzy(const TTree_fuzzy &); //РљРѕРїРёРєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+	TTree_fuzzy& operator=(const TTree_fuzzy &); //РљРѕРїРёСЂРѕРІР°РЅРёРµ РґРµСЂРµРІР°
 
-	void Mutate(int, double); //Мутировать с вероятностью
+	void Mutate(int, double); //РњСѓС‚РёСЂРѕРІР°С‚СЊ СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ
 
 	void Calculate_fitness(TFuzzy&);
 	vector< vector<int> > Get_rules();
-	void Get_result(const vector<int>&); 	//Получить значение дерева через рекурсии
+	void Get_result(const vector<int>&); 	//РџРѕР»СѓС‡РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ РґРµСЂРµРІР° С‡РµСЂРµР· СЂРµРєСѓСЂСЃРёРё
 	vector< vector<int> > Decart(int *[], int);
 
 

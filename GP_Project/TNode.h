@@ -5,25 +5,25 @@ using namespace std;
 class TNode
 {
 protected:
-	int problem; //Тип узла 0-регрессия,1-нечеткая логика
-	bool type; //true-функциональный false-терминальный
-	bool constant; //true - константа false - перемеенная
-	bool state; // Состояние просчитанный узел или нет
+	int problem; //РўРёРї СѓР·Р»Р° 0-СЂРµРіСЂРµСЃСЃРёСЏ,1-РЅРµС‡РµС‚РєР°СЏ Р»РѕРіРёРєР°
+	bool type; //true-С„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅС‹Р№ false-С‚РµСЂРјРёРЅР°Р»СЊРЅС‹Р№
+	bool constant; //true - РєРѕРЅСЃС‚Р°РЅС‚Р° false - РїРµСЂРµРјРµРµРЅРЅР°СЏ
+	bool state; // РЎРѕСЃС‚РѕСЏРЅРёРµ РїСЂРѕСЃС‡РёС‚Р°РЅРЅС‹Р№ СѓР·РµР» РёР»Рё РЅРµС‚
 
-	double value; //Значение узла
+	double value; //Р—РЅР°С‡РµРЅРёРµ СѓР·Р»Р°
 
-	int *child; // Порядковые номера потомков
+	int *child; // РџРѕСЂСЏРґРєРѕРІС‹Рµ РЅРѕРјРµСЂР° РїРѕС‚РѕРјРєРѕРІ
 
-	int num_var; //Номер переменной
-	int func; //Тип функционала
-	unsigned short int arn; //Арность функционала
-	int num_parent; //Номер родительского узла
-	int n_child; //Кол-во потомков
-	int num_self; // Свой номер для родительского узла
-	int num_layer; // Свой номер слоя
+	int num_var; //РќРѕРјРµСЂ РїРµСЂРµРјРµРЅРЅРѕР№
+	int func; //РўРёРї С„СѓРЅРєС†РёРѕРЅР°Р»Р°
+	unsigned short int arn; //РђСЂРЅРѕСЃС‚СЊ С„СѓРЅРєС†РёРѕРЅР°Р»Р°
+	int num_parent; //РќРѕРјРµСЂ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ СѓР·Р»Р°
+	int n_child; //РљРѕР»-РІРѕ РїРѕС‚РѕРјРєРѕРІ
+	int num_self; // РЎРІРѕР№ РЅРѕРјРµСЂ РґР»СЏ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ СѓР·Р»Р°
+	int num_layer; // РЎРІРѕР№ РЅРѕРјРµСЂ СЃР»РѕСЏ
 
-	string symbol;  //Символ функционала
-	string index; //Абсолютный индекс узла
+	string symbol;  //РЎРёРјРІРѕР» С„СѓРЅРєС†РёРѕРЅР°Р»Р°
+	string index; //РђР±СЃРѕР»СЋС‚РЅС‹Р№ РёРЅРґРµРєСЃ СѓР·Р»Р°
 public:
 
 
@@ -45,7 +45,7 @@ public:
 	void Set_num_parent(int n) {num_parent = n;};
 	void Set_child(int i, int n) {child[i] = n; };
 
-	void Set_symbol(int); //Установить символ
+	void Set_symbol(int); //РЈСЃС‚Р°РЅРѕРІРёС‚СЊ СЃРёРјРІРѕР»
 	void Set_index(string str) {index = str;};
 	void Set_func(int n) {func = n;};
 
@@ -55,21 +55,21 @@ class TNode_symbolic : public TNode
 {
 private:
 	
-	TNode_symbolic *argument;   //Указатель на слой потомков
+	TNode_symbolic *argument;   //РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃР»РѕР№ РїРѕС‚РѕРјРєРѕРІ
 
 public:
 	TNode_symbolic();
 	~TNode_symbolic();
-	TNode_symbolic(const TNode_symbolic&); //Копиконструктор
-	TNode_symbolic& operator= (const TNode_symbolic&); // Копирование узла
+	TNode_symbolic(const TNode_symbolic&); //РљРѕРїРёРєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+	TNode_symbolic& operator= (const TNode_symbolic&); // РљРѕРїРёСЂРѕРІР°РЅРёРµ СѓР·Р»Р°
 
-	void Init(bool, int, int, int); // Инициализация
+	void Init(bool, int, int, int); // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
 
 	
-	void Get_result(vector<int *>&, int, int *); //Нечеткая логика
-	double Get_result(double *); //Регрессия
+	void Get_result(vector<int *>&, int, int *); //РќРµС‡РµС‚РєР°СЏ Р»РѕРіРёРєР°
+	double Get_result(double *); //Р РµРіСЂРµСЃСЃРёСЏ
 
-	string Get_formula(string); // Получить формулу узла через рекурсии
+	string Get_formula(string); // РџРѕР»СѓС‡РёС‚СЊ С„РѕСЂРјСѓР»Сѓ СѓР·Р»Р° С‡РµСЂРµР· СЂРµРєСѓСЂСЃРёРё
 
 	int Get_n_heirs();
 
@@ -90,19 +90,19 @@ class TNode_DE : public TNode
 {
 private:
 
-	TNode_DE *argument;   //Указатель на слой потомков
+	TNode_DE *argument;   //РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃР»РѕР№ РїРѕС‚РѕРјРєРѕРІ
 
 public:
 	TNode_DE();
 	~TNode_DE();
-	TNode_DE(const TNode_DE&); //Копиконструктор
-	TNode_DE& operator= (const TNode_DE&); // Копирование узла
+	TNode_DE(const TNode_DE&); //РљРѕРїРёРєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+	TNode_DE& operator= (const TNode_DE&); // РљРѕРїРёСЂРѕРІР°РЅРёРµ СѓР·Р»Р°
 
-	void Init(bool, int, int, int); // Инициализация
+	void Init(bool, int, int, int); // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
 
-	double Get_result(double *); //Регрессия
+	double Get_result(double *); //Р РµРіСЂРµСЃСЃРёСЏ
 
-	string Get_formula(string); // Получить формулу узла через рекурсии
+	string Get_formula(string); // РџРѕР»СѓС‡РёС‚СЊ С„РѕСЂРјСѓР»Сѓ СѓР·Р»Р° С‡РµСЂРµР· СЂРµРєСѓСЂСЃРёРё
 
 	int Get_n_heirs();
 
