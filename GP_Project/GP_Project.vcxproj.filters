@@ -57,6 +57,9 @@
     <ClCompile Include="TTruck.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="HarrixMathLibrary.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DIFFEVO.h">
@@ -108,6 +111,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="TTruck.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="HarrixMathLibrary.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

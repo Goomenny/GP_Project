@@ -9,12 +9,9 @@ public:
 
 
 	void Calculate_fitness(double **, double *, int, double); //”становить пригодности индивидов регресси¤
-
-	void Set(double i) { x = i * 3; }
-	double Get() { return x; }
+	double Get_meansquare();
 
 private:
-	double x = 7;
 
 };
 
@@ -25,10 +22,19 @@ public:
 	void Calculate_fitness(TFuzzy &); //”становить пригодности индивидов
 	vector< vector<int> > Get_best_rules();
 
-	double Get() { return x; }
-	void Set(double i) { x = i; }
+
 
 private:
-	double x = 8;
+
+
+};
+
+class TPopulation_DE: public TPopulation<TTree_symbolic> {
+public:
+
+
+	void Calculate_fitness();
+
+private:
 
 };

@@ -10,7 +10,7 @@
 #include "Functions.h"
 #include "DIFFEVO.h"
 #include <iostream>
-
+#include "HarrixMathLibrary.h"
 using namespace std;
 
 // Возвращает индекс минимального элемента массива arr размера size
@@ -193,10 +193,25 @@ void fuzzy() {
 	
 }
 int main() {
-	TDE de;
-	de.Init(evaluate);
-	de.Start_fast(evaluate);
-	regress();
+	srand(time(NULL));
+
+	TTree_symbolic Tree;
+	Tree.Init(4, 7, 0, 2);
+
+	TTest test;
+	test.Calculate(Tree);
+	cout <<Tree.Get_formula() <<endl << test.Get_meanresult() << endl << test.Get_reliability();
+	//regress();
+	/*
+	Tree.Calculate_fitness();
+	cout<< Tree.Get_formula()<<endl<<Tree.Get_fitness()<<endl;
+
+	//cout<<optimizer.Start_fast(HML_TestFunction_Griewangk, Tree);
+
+	double var[7]{ 0,1,1,3,4,5,6 };
+
+	cout<<Tree.Get_result(var)<<endl;
+	*/
 	system("pause");
 	return 0;
 }

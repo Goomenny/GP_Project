@@ -8,6 +8,11 @@ void TPopulation_symbolic::Calculate_fitness(double **data, double *y, int size,
 	}
 }
 
+double TPopulation_symbolic::Get_meansquare()
+{
+	return best_tree.Get_meansquare();
+}
+
 
 void TPopulation_fuzzy::Calculate_fitness(TFuzzy& fuzzy) {
 
@@ -19,4 +24,12 @@ void TPopulation_fuzzy::Calculate_fitness(TFuzzy& fuzzy) {
 vector< vector<int> > TPopulation_fuzzy::Get_best_rules()
 {
 	return best_tree.Get_rules();
+}
+
+
+void TPopulation_DE::Calculate_fitness() {
+
+	for (int i = 0; i < size_of_population; i++) {
+		tree[i].Calculate_fitness();
+	}
 }

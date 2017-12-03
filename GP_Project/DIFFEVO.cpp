@@ -1,13 +1,12 @@
 #include "DIFFEVO.h"
-
-float TDE::rnd_uni(long * idum)
+double rnd_uni(long * idum)
 {
 	
 		long j, k;
 		static long idum2 = 123456789;
 		static long iy = 0;
 		static long iv[NTAB];
-		float temp;
+		double temp;
 
 		if (*idum <= 0) {
 			if (-(*idum) < 1) {
@@ -46,13 +45,13 @@ float TDE::rnd_uni(long * idum)
 			iy += IMM1;
 		}
 		// Changes: C. Brauer
-		// temp = ((float) iy)/IM1;
+		// temp = ((double) iy)/IM1;
 		// #define AM (1.0/IM1)
 		double AM = (1.0 / IM1);
-		temp = (float)AM*iy;
-		// temp = (float) ( ( (double) iy)/IM1 );
+		temp = (double)AM*iy;
+		// temp = (double) ( ( (double) iy)/IM1 );
 		if (temp > RNMX) {
-			return (float)RNMX;
+			return (double)RNMX;
 		}
 		else {
 			return temp;
@@ -60,19 +59,19 @@ float TDE::rnd_uni(long * idum)
 
 }
 
-void TDE::Init(float(*evaluate)(int, float[], long *))
+void TDE::Init(double(*evaluate)(double[], int,  long *))
 {
 
-	strategy = 3;     // choice of strategy
-	genmax = 1000;         // maximum number of generations
+	strategy = 11;     // choice of strategy
+	genmax = 200;         // maximum number of generations
 	refresh = 50;        // output refresh cycle
-	D = 15;             // number of parameters
+	D = 3;             // number of parameters
 	NP = 50;             // population size.
 	inibound_h = 10.;     // upper parameter bound for init
 	inibound_l = -10.;     // lower parameter bound for init
 	F=0.75;              // weight factor
 	CR=1.;             // crossing over factor
-	seed=3;           // random seed 
+	seed= rand()%RAND_MAX;           // random seed 
 
 	rnd_uni_init = -(long)seed;  // initialization of rnd_uni() 
 	nfeval = 0;           // reset number of function evaluations 
@@ -90,7 +89,7 @@ void TDE::Init(float(*evaluate)(int, float[], long *))
 			r = rnd_uni(&rnd_uni_init);
 			c[i][j] = inibound_l + r*(inibound_h - inibound_l);
 		}
-		energy[i] = evaluate(D, c[i], &nfeval);
+		energy[i] = evaluate(c[i], D, &nfeval);
 		// printf("%2d %20.8f %3d\n", i, energy[i], nfeval);
 		// cin.get(ch);
 	}
@@ -105,7 +104,7 @@ void TDE::Init(float(*evaluate)(int, float[], long *))
 	}
 }
 
-int TDE::CopyVector(float a[], float b[])
+int TDE::CopyVector(double a[], double b[])
 {
 		for (int k = 0; k<MAXDIM; k++) {
 			a[k] = b[k];
@@ -113,7 +112,7 @@ int TDE::CopyVector(float a[], float b[])
 		return 0;
 }
 
-int TDE::CopyArray(float dest[MAXPOP][MAXDIM], float src[MAXPOP][MAXDIM])
+int TDE::CopyArray(double dest[MAXPOP][MAXDIM], double src[MAXPOP][MAXDIM])
 {
 		for (int j = 0; j<MAXPOP; j++) {
 			for (int k = 0; k<MAXDIM; k++) {
@@ -123,7 +122,7 @@ int TDE::CopyArray(float dest[MAXPOP][MAXDIM], float src[MAXPOP][MAXDIM])
 		return 0;
 }
 
-float TDE::Start_fast(float(*evaluate)(int, float[], long *))
+double TDE::Start_fast(double(*evaluate)(double[], int,  long *), TTree_symbolic & tree)
 {
 	CopyVector(best, c[imin]);
 	CopyVector(bestit, c[imin]);
@@ -321,7 +320,7 @@ float TDE::Start_fast(float(*evaluate)(int, float[], long *))
 				}
 			}
 			// DE/rand/2/bin
-			else {
+			else if (strategy == 10) {
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
@@ -333,9 +332,29 @@ float TDE::Start_fast(float(*evaluate)(int, float[], long *))
 					n = (n + 1) % D;
 				}
 			}
+			else {
+				for (int k = 0; k<MAXDIM; k++) {
+					tmp[k] = oldarray[i][k];
+				}
+				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				for (L = 0; L<D; L++) {
+					vars[0] = tmp[n];
+					vars[1] = oldarray[imin][n];
+					vars[2] = oldarray[r1][n];
+					vars[3] = oldarray[r2][n];
+					vars[4] = oldarray[r3][n];
+					vars[5] = oldarray[r4][n];
+					vars[6] = oldarray[r5][n];
+					if ((rnd_uni(&rnd_uni_init) < CR) || L == (D - 1)) {
+						tmp[n] = tree.Get_result(vars);
+						//tmp[n] = tmp[n] + F*(bestit[n] - tmp[n]) + F*(oldarray[r1][n] - oldarray[r2][n]);
+					}
+					n = (n + 1) % D;
+				}
+			}
 
 			// Trial mutation now in tmp[]. Test how good this choice really was.
-			trial_energy = evaluate(D, tmp, &nfeval);  // Evaluate new vector in tmp[]
+			trial_energy = evaluate(tmp, D, &nfeval);  // Evaluate new vector in tmp[]
 													   // improved objective function value?
 			if (trial_energy <= energy[i]) {
 				energy[i] = trial_energy;
@@ -367,26 +386,6 @@ float TDE::Start_fast(float(*evaluate)(int, float[], long *))
 		CopyArray(oldarray, newarray);
 		CopyArray(newarray, swaparray);
 
-		// display after every refresh generations
-
-		// if (gen%refresh == 1) {
-		if (false) {
-			printf("\n\n Best-so-far obj. funct. value: %15.10f", emin);
-			for (j = 0; j<D; j++) {
-				printf("\n best[%d]: %14.7f", j, best[j]);
-			}
-			printf("\n Generation: %d  NFEs: %d", gen, nfeval);
-			printf("\n Strategy: %d  NP: %d  F: %f  CR: %f", strategy, NP, F, CR);
-		}
 	}
-
-	printf("\n\n Best-so-far objective funct. value: %-15.10g", emin);
-	for (j = 0; j<D; j++) {
-		printf("\n best[%d]: %18.10f", j, best[j]);
-	}
-	printf("\n No. of Generations: %d", gen);
-	printf("\n Numner of Function Evaluations: %ld", nfeval);
-	printf("\n Strategy: %d, NP: %d, F: %f, CR: %f", strategy, NP, F, CR);
-
 	return emin;
 }

@@ -1,6 +1,4 @@
 #include "TTree.h"
-#include "math.h"
-
 TTree_symbolic::TTree_symbolic() {
 	meansquare = 0;
 
@@ -39,16 +37,18 @@ void TTree_symbolic::Calculate_fitness(double **var, double *y, int size, double
 	fitness = size / (size + fitness);
 }
 
-double TTree_symbolic::Get_meansquare()
-{
-	return meansquare;
-}
-
 string TTree_symbolic::Get_formula() {
 	return node[0][0].Get_formula(node[0][0].Get_symbol());
 }
 inline double TTree_symbolic::Get_result(double *gvar) {
 	return node[0][0].Get_result(gvar);
+}
+void TTree_symbolic::Calculate_fitness()
+{
+	//test.Calculate(this);
+
+	//fitness = test.Get_reliability();
+	//meanresult = test.Get_meanresult();
 }
 void TTree_symbolic::Mutate(int type_of_mutation, double probability_of_mutation) {
 	double ran = 0;

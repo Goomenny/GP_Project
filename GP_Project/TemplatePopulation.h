@@ -44,7 +44,6 @@ public:
 
 
 	double Get_best_value(double *);
-	double Get_meansquare();
 	string Get_best_formula();
 	double Get_best_fitness();
 	double Get_tree_fitness(int) const;
@@ -345,11 +344,6 @@ template<class Tree>
 double TPopulation<Tree>::Get_best_value(double * var)
 {
 	return best_tree.Get_result(var);
-}
-template<class Tree>
-double TPopulation<Tree>::Get_meansquare()
-{
-	return best_tree.Get_meansquare();
 }
 template<class Tree>
 string TPopulation<Tree>::Get_best_formula()

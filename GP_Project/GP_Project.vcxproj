@@ -112,6 +112,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DIFFEVO.cpp" />
+    <ClCompile Include="HarrixMathLibrary.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TConjugate_Gradient.cpp" />
     <ClCompile Include="TFuzzy.cpp" />
@@ -129,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="DIFFEVO.h" />
     <ClInclude Include="Functions.h" />
+    <ClInclude Include="HarrixMathLibrary.h" />
     <ClInclude Include="TConjugate_Gradient.h" />
     <ClInclude Include="TemplateGP.h" />
     <ClInclude Include="TemplatePopulation.h" />

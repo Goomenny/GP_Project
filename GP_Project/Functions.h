@@ -1,15 +1,41 @@
 #pragma once
-float evaluate(int D, float tmp[], long *nfeval) {
+#include "HarrixMathLibrary.h"
+#include "TTree.h"
+#include "DIFFEVO.h"
+class TTest
+{
+public:
+	void Calculate( TTree_symbolic &tree);
 
-	float result = 1;
+	double Get_reliability() { return reliability; };
+	double Get_meanresult() { return meanresult; };
 
-	(*nfeval)++;
+private:
+	TDE optimizer;
+	int runs = 100;
+	double eps = 0.01;
 
-	for (int i = 0; i < D; i++)
+	double reliability = 0;
+	double meanresult = 0;
+
+	double result;
+
+};
+
+void TTest::Calculate( TTree_symbolic &tree) {
+	
+	
+	for (int i = 0; i < runs; i++)
 	{
-		result += tmp[i] * tmp[i];
+		optimizer.Init(HML_TestFunction_Griewangk);
+		result = optimizer.Start_fast(HML_TestFunction_Griewangk,tree);
+
+		meanresult += fabs(result);
+
+		if (result < eps) reliability++;
 	}
-
-
-	return result-1.;
+	reliability /= double(runs) ;
+	meanresult /= double(runs);
 }
+
+	

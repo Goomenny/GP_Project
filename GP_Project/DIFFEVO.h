@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <ctime>
+#include "TTree.h"
 #define MAXPOP  500
 #define MAXDIM  35
 #define IM1 2147483563
@@ -28,27 +30,29 @@ private:
 	int   strategy;        // choice parameter for screen output 
 	int   gen, genmax, seed;
 	long  nfeval;          // number of function evaluations     
-	float trial_energy;    // buffer variable                    
-	float inibound_h;      // upper parameter bound              
-	float inibound_l;      // lower parameter bound              
-	float tmp[MAXDIM], best[MAXDIM], bestit[MAXDIM]; // members  
-	float energy[MAXPOP];  // obj. funct. values                 
-	float F, CR;           // control variables of DE            
-	float emin;            // help variables                     
+	double trial_energy;    // buffer variable                    
+	double inibound_h;      // upper parameter bound              
+	double inibound_l;      // lower parameter bound              
+	double tmp[MAXDIM], best[MAXDIM], bestit[MAXDIM]; // members  
+	double energy[MAXPOP];  // obj. funct. values                 
+	double F, CR;           // control variables of DE            
+	double emin;            // help variables                     
 
 	long  rnd_uni_init;
-	float c[MAXPOP][MAXDIM], d[MAXPOP][MAXDIM];
-	float oldarray[MAXPOP][MAXDIM];
-	float newarray[MAXPOP][MAXDIM];
-	float swaparray[MAXPOP][MAXDIM];
+	double c[MAXPOP][MAXDIM], d[MAXPOP][MAXDIM];
+	double oldarray[MAXPOP][MAXDIM];
+	double newarray[MAXPOP][MAXDIM];
+	double swaparray[MAXPOP][MAXDIM];
+	double vars[7];
 
-	float rnd_uni(long *idum);
-	float r;
+	double r;
+
 public:
-	void Init(float(*evaluate)(int, float[], long *));
-	int CopyVector(float a[], float b[]);
-	int CopyArray(float dest[MAXPOP][MAXDIM], float src[MAXPOP][MAXDIM]);
-	float Start_fast(float(*evaluate)(int, float[], long *));
+	void Init(double(*evaluate)(double[], int, long *));
+	int CopyVector(double a[], double b[]);
+	int CopyArray(double dest[MAXPOP][MAXDIM], double src[MAXPOP][MAXDIM]);
+	double Start_fast(double(*evaluate)(double[], int, long *), TTree_symbolic &tree );
 
 
 };
+double rnd_uni(long *idum);

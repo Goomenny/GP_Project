@@ -243,10 +243,6 @@ string TNode_symbolic::Get_formula(string gsymbol) {
 
 }
 
-
-
-
-
 void TNode_symbolic::Set_argument(TNode_symbolic *arg)
 {
 	argument = arg;
@@ -454,18 +450,23 @@ string TNode_DE::Get_formula(string gsymbol) {
 			}
 			else formula = to_string(value);
 		}
+		else if (num_var == 0)
+		{
+			formula = "self";
+		}
+		else if (num_var == 1) 
+		{
+			formula = "best";
+		}
 		else
 		{
-			formula = "x";
-			formula += to_string(num_var);
+			formula = "ind";
+			formula += to_string(num_var-2);
 		}
 
 	return formula;
 
 }
-
-
-
 
 
 void TNode_DE::Set_argument(TNode_DE *arg)
@@ -490,4 +491,3 @@ int TNode_DE::Get_n_heirs() {
 	else return 0;
 
 }
-
