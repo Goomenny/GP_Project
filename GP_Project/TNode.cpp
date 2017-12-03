@@ -190,16 +190,16 @@ double TNode_symbolic::Get_result(double *gvar) {
 
 		switch (func) {
 		case 0:
-			value = Sum(argument, child, n_child, gvar);
+			value = Sum<TNode_symbolic>(argument, child, n_child, gvar);
 			break;
 		case 1:
-			value = Minu(argument, child, n_child, gvar);
+			value = Minu<TNode_symbolic>(argument, child, n_child, gvar);
 			break;
 		case 2:
-			value = Multip(argument, child, n_child, gvar);
+			value = Multip<TNode_symbolic>(argument, child, n_child, gvar);
 			break;
 		case 3:
-			value = Divis(argument, child, n_child, gvar);
+			value = Divis<TNode_symbolic>(argument, child, n_child, gvar);
 			break;
 		}
 	}
@@ -411,13 +411,13 @@ double TNode_DE::Get_result(double *gvar) {
 
 		switch (func) {
 		case 0:
-			value = Sum(argument, child, n_child, gvar);
+			value = Sum<TNode_DE>(argument, child, n_child, gvar);
 			break;
 		case 1:
-			value = Minu(argument, child, n_child, gvar);
+			value = Minu<TNode_DE>(argument, child, n_child, gvar);
 			break;
 		case 2:
-			value = Multip(argument, child, n_child, gvar);
+			value = Multip<TNode_DE>(argument, child, n_child, gvar);
 			break;
 		case 3:
 		//	value = Divis(argument, child, n_child, gvar);
@@ -491,51 +491,3 @@ int TNode_DE::Get_n_heirs() {
 
 }
 
-//---------------------------------------------------------------------------
-double Sum(TNode_symbolic *argument, int *index, int size, double *gvar) {
-	double sum = 0;
-	for (int i = 0; i < size; i++) {
-		sum += argument[index[i]].Get_result(gvar);
-	}
-	return sum;
-}
-//---------------------------------------------------------------------------
-double Minu(TNode_symbolic *argument, int *index, int size, double *gvar) {
-	return argument[index[0]].Get_result(gvar) - argument[index[1]].Get_result(gvar);
-}
-//---------------------------------------------------------------------------
-double Multip(TNode_symbolic *argument, int *index, int size, double *gvar) {
-	double mult = 1;
-	for (int i = 0; i < size; i++) {
-		mult *= argument[index[i]].Get_result(gvar);
-	}
-	return mult;
-}
-//---------------------------------------------------------------------------
-double Divis(TNode_symbolic *argument, int *index, int size, double *gvar) {
-	if (argument[index[1]].Get_result(gvar) != 0) 	return argument[index[0]].Get_result(gvar) / argument[index[1]].Get_result(gvar);
-	else   									return argument[index[0]].Get_result(gvar);
-}
-//---------------------------------------------------------------------------
-
-//---------------------------------------------------------------------------
-double Sum(TNode_DE *argument, int *index, int size, double *gvar) {
-	double sum = 0;
-	for (int i = 0; i < size; i++) {
-		sum += argument[index[i]].Get_result(gvar);
-	}
-	return sum;
-}
-//---------------------------------------------------------------------------
-double Minu(TNode_DE *argument, int *index, int size, double *gvar) {
-	return argument[index[0]].Get_result(gvar) - argument[index[1]].Get_result(gvar);
-}
-//---------------------------------------------------------------------------
-double Multip(TNode_DE *argument, int *index, int size, double *gvar) {
-	double mult = 1;
-	for (int i = 0; i < size; i++) {
-		mult *= argument[index[i]].Get_result(gvar);
-	}
-	return mult;
-}
-//---------------------------------------------------------------------------

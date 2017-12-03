@@ -111,7 +111,34 @@ public:
 
 };
 
-double Sum(TNode_symbolic *, int *, int, double *);
-double Minu(TNode_symbolic *, int *, int, double *);
-double Multip(TNode_symbolic *, int *, int, double *);
-double Divis(TNode_symbolic *, int *, int, double *);
+
+//---------------------------------------------------------------------------
+template < class Node >
+double Sum(Node *argument, int *index, int size, double *gvar) {
+	double sum = 0;
+	for (int i = 0; i < size; i++) {
+		sum += argument[index[i]].Get_result(gvar);
+	}
+	return sum;
+}
+//---------------------------------------------------------------------------
+template < class Node >
+double Minu(Node *argument, int *index, int size, double *gvar) {
+	return argument[index[0]].Get_result(gvar) - argument[index[1]].Get_result(gvar);
+}
+//---------------------------------------------------------------------------
+template < class Node >
+double Multip(Node *argument, int *index, int size, double *gvar) {
+	double mult = 1;
+	for (int i = 0; i < size; i++) {
+		mult *= argument[index[i]].Get_result(gvar);
+	}
+	return mult;
+}
+//---------------------------------------------------------------------------
+template < class Node >
+double Divis(Node *argument, int *index, int size, double *gvar) {
+	if (argument[index[1]].Get_result(gvar) != 0) 	return argument[index[0]].Get_result(gvar) / argument[index[1]].Get_result(gvar);
+	else   									return argument[index[0]].Get_result(gvar);
+}
+//---------------------------------------------------------------------------
