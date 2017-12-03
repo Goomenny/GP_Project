@@ -18,10 +18,10 @@ TTree_symbolic::TTree_symbolic(const TTree_symbolic &other) {
 	this->meansquare = other.meansquare;
 }
 //---------------------------------------------------------------------------
-/*TTree_symbolic& TTree_symbolic::operator=(const TTree_symbolic &other) {//перегрузка оператора присваивания
+/*TTree_symbolic& TTree_symbolic::operator=(const TTree_symbolic &other) {//РїРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂР° РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 
 	if (this == &other)
-		return *this; // присвоение самому себе, ничего делать не надо
+		return *this; // РїСЂРёСЃРІРѕРµРЅРёРµ СЃР°РјРѕРјСѓ СЃРµР±Рµ, РЅРёС‡РµРіРѕ РґРµР»Р°С‚СЊ РЅРµ РЅР°РґРѕ
 
 	this->meansquare = other.meansquare;
 
@@ -109,10 +109,10 @@ TTree_fuzzy::TTree_fuzzy(const TTree_fuzzy &other) {
 	this->rules = other.rules;
 }
 //---------------------------------------------------------------------------
-TTree_fuzzy& TTree_fuzzy::operator=(const TTree_fuzzy &other) {//перегрузка оператора присваивания
+TTree_fuzzy& TTree_fuzzy::operator=(const TTree_fuzzy &other) {//РїРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂР° РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 
 	if (this == &other)
-		return *this; // присвоение самому себе, ничего делать не надо
+		return *this; // РїСЂРёСЃРІРѕРµРЅРёРµ СЃР°РјРѕРјСѓ СЃРµР±Рµ, РЅРёС‡РµРіРѕ РґРµР»Р°С‚СЊ РЅРµ РЅР°РґРѕ
 
 	this->rules = other.rules;
 
@@ -140,35 +140,35 @@ vector< vector <int> > TTree_fuzzy::Decart(int *rule_index[], int num_term)
 
 		tmp.clear();
 		tmp.reserve(rule_index[1][i] - rule_index[0][i]);
-		for (int v = rule_index[0][i]; v < rule_index[1][i]; v++) {     //Сбрасываем начальные и конечные значения
+		for (int v = rule_index[0][i]; v < rule_index[1][i]; v++) {     //РЎР±СЂР°СЃС‹РІР°РµРј РЅР°С‡Р°Р»СЊРЅС‹Рµ Рё РєРѕРЅРµС‡РЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ
 			tmp.push_back(v);
 		}
 		sets.push_back(tmp);
 	}
 	int const n = sets.size();
-	vector<int> counter(n, 0); // счётчик размером с количество множеств
+	vector<int> counter(n, 0); // СЃС‡С‘С‚С‡РёРє СЂР°Р·РјРµСЂРѕРј СЃ РєРѕР»РёС‡РµСЃС‚РІРѕ РјРЅРѕР¶РµСЃС‚РІ
 
-	bool carry = false; // флаг переноса
+	bool carry = false; // С„Р»Р°Рі РїРµСЂРµРЅРѕСЃР°
 	while (!carry)
 	{
-		// формируем произведение множеств
+		// С„РѕСЂРјРёСЂСѓРµРј РїСЂРѕРёР·РІРµРґРµРЅРёРµ РјРЅРѕР¶РµСЃС‚РІ
 		vector<int> carthesian(n);
 		for (int i = 0; i != n; ++i) carthesian[i] = sets[i][counter[i]];
-		//Вставляем номер выходного терма
+		//Р’СЃС‚Р°РІР»СЏРµРј РЅРѕРјРµСЂ РІС‹С…РѕРґРЅРѕРіРѕ С‚РµСЂРјР°
 		carthesian.push_back(num_term);
-		//Добавляем правило в общий список новых правил
+		//Р”РѕР±Р°РІР»СЏРµРј РїСЂР°РІРёР»Рѕ РІ РѕР±С‰РёР№ СЃРїРёСЃРѕРє РЅРѕРІС‹С… РїСЂР°РІРёР»
 		res.push_back(carthesian);
 
-		// выполняем инкремент счётчика - поразрядно, начиная с младшего (первого) разряда
+		// РІС‹РїРѕР»РЅСЏРµРј РёРЅРєСЂРµРјРµРЅС‚ СЃС‡С‘С‚С‡РёРєР° - РїРѕСЂР°Р·СЂСЏРґРЅРѕ, РЅР°С‡РёРЅР°СЏ СЃ РјР»Р°РґС€РµРіРѕ (РїРµСЂРІРѕРіРѕ) СЂР°Р·СЂСЏРґР°
 		carry = true;
 		for (int i = 0; i != n && carry; ++i)
 		{
 			int& cell = counter[i];
 			++cell;
-			carry = cell == sets[i].size(); // у каждого разряда - свой предел
+			carry = cell == sets[i].size(); // Сѓ РєР°Р¶РґРѕРіРѕ СЂР°Р·СЂСЏРґР° - СЃРІРѕР№ РїСЂРµРґРµР»
 			if (carry) cell = 0;
 		}
-		// если перенос вылетел за пределы счётчика - значит, он перекрутился
+		// РµСЃР»Рё РїРµСЂРµРЅРѕСЃ РІС‹Р»РµС‚РµР» Р·Р° РїСЂРµРґРµР»С‹ СЃС‡С‘С‚С‡РёРєР° - Р·РЅР°С‡РёС‚, РѕРЅ РїРµСЂРµРєСЂСѓС‚РёР»СЃСЏ
 	}
 	return res;
 }
@@ -178,10 +178,10 @@ void TTree_fuzzy::Get_result(const vector<int>& n_terms) {
 
 	int tmp = 0;
 
-	vector< vector<int> > new_rules; //Массив добавляемых правил в терминльном узле
+	vector< vector<int> > new_rules; //РњР°СЃСЃРёРІ РґРѕР±Р°РІР»СЏРµРјС‹С… РїСЂР°РІРёР» РІ С‚РµСЂРјРёРЅР»СЊРЅРѕРј СѓР·Р»Рµ
 
-	vector<int> operations;    //Вектор с операциями %x%y
-	int *rule_index[2];     //Начальные и конечные значения термов по переменным
+	vector<int> operations;    //Р’РµРєС‚РѕСЂ СЃ РѕРїРµСЂР°С†РёСЏРјРё %x%y
+	int *rule_index[2];     //РќР°С‡Р°Р»СЊРЅС‹Рµ Рё РєРѕРЅРµС‡РЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ С‚РµСЂРјРѕРІ РїРѕ РїРµСЂРµРјРµРЅРЅС‹Рј
 	for (int i = 0; i < 2; i++) {
 		rule_index[i] = new int[n_var];
 	}
@@ -191,32 +191,32 @@ void TTree_fuzzy::Get_result(const vector<int>& n_terms) {
 	for (int i = 1; i < deep; i++) {
 		for (int j = 0; j < n_node[i]; j++) {
 
-			if (!node[i][j].Get_type()) { //Если узел терминальный
+			if (!node[i][j].Get_type()) { //Р•СЃР»Рё СѓР·РµР» С‚РµСЂРјРёРЅР°Р»СЊРЅС‹Р№
 
-				for (int v = 0; v < n_var; v++) {     //Сбрасываем начальные и конечные значения
+				for (int v = 0; v < n_var; v++) {     //РЎР±СЂР°СЃС‹РІР°РµРј РЅР°С‡Р°Р»СЊРЅС‹Рµ Рё РєРѕРЅРµС‡РЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ
 					rule_index[0][v] = 0;
 					rule_index[1][v] = n_terms[v];
 				}
 
-				int num_parent = node[i][j].Get_num_parent();        //Номер родителя
-				operations.clear();      //Очищаем операции
-				for (int i2 = i - 1; i2 >= 0; i2--) {    //Проходим цепочку вверх собирая операции
+				int num_parent = node[i][j].Get_num_parent();        //РќРѕРјРµСЂ СЂРѕРґРёС‚РµР»СЏ
+				operations.clear();      //РћС‡РёС‰Р°РµРј РѕРїРµСЂР°С†РёРё
+				for (int i2 = i - 1; i2 >= 0; i2--) {    //РџСЂРѕС…РѕРґРёРј С†РµРїРѕС‡РєСѓ РІРІРµСЂС… СЃРѕР±РёСЂР°СЏ РѕРїРµСЂР°С†РёРё
 					operations.push_back(node[i2][num_parent].Get_func());
 					num_parent = node[i2][num_parent].Get_num_parent();
 				}
 
-				for (int i2 = 0; i2 < i; i2++) {  //Производим деление термов
+				for (int i2 = 0; i2 < i; i2++) {  //РџСЂРѕРёР·РІРѕРґРёРј РґРµР»РµРЅРёРµ С‚РµСЂРјРѕРІ
 
-					if (node[i][j].Get_index()[i2 + 1] - '0' == 0)   //Если левый узел
+					if (node[i][j].Get_index()[i2 + 1] - '0' == 0)   //Р•СЃР»Рё Р»РµРІС‹Р№ СѓР·РµР»
 					{
 						rule_index[1][operations[operations.size() - 1 - i2]] -= (rule_index[1][operations[operations.size() - 1 - i2]] - rule_index[0][operations[operations.size() - 1 - i2]]) / 2;
 					}
 					else
 					{
-						//tmp-кол-во термов для деления
+						//tmp-РєРѕР»-РІРѕ С‚РµСЂРјРѕРІ РґР»СЏ РґРµР»РµРЅРёСЏ
 						tmp = (rule_index[1][operations[operations.size() - 1 - i2]] - rule_index[0][operations[operations.size() - 1 - i2]]);
 
-						if (tmp % 2 == 0) // Если термов четное число
+						if (tmp % 2 == 0) // Р•СЃР»Рё С‚РµСЂРјРѕРІ С‡РµС‚РЅРѕРµ С‡РёСЃР»Рѕ
 						{
 							rule_index[0][operations[operations.size() - 1 - i2]] += tmp / 2;
 						}
@@ -227,7 +227,7 @@ void TTree_fuzzy::Get_result(const vector<int>& n_terms) {
 							}
 							else
 							{
-								//Приравниваем начало к концу => 0 новых правил
+								//РџСЂРёСЂР°РІРЅРёРІР°РµРј РЅР°С‡Р°Р»Рѕ Рє РєРѕРЅС†Сѓ => 0 РЅРѕРІС‹С… РїСЂР°РІРёР»
 								rule_index[0][operations[operations.size() - 1 - i2]] = rule_index[1][operations[operations.size() - 1 - i2]];
 								break;
 							}
@@ -238,7 +238,7 @@ void TTree_fuzzy::Get_result(const vector<int>& n_terms) {
 				}
 
 				int n_rules = 1;
-				for (int v = 0; v < n_var; v++) { //Считаем кол-во правил
+				for (int v = 0; v < n_var; v++) { //РЎС‡РёС‚Р°РµРј РєРѕР»-РІРѕ РїСЂР°РІРёР»
 
 					n_rules *= rule_index[1][v] - rule_index[0][v];
 				}
