@@ -1,4 +1,4 @@
-﻿#include "TSetting.h"
+#include "TSetting.h"
 
 TSetting::TSetting(){;
 	n_selections=5;

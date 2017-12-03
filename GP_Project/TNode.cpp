@@ -68,10 +68,10 @@ TNode_symbolic::TNode_symbolic(const TNode_symbolic &other) {
 
 }
 //---------------------------------------------------------------------------
-TNode_symbolic& TNode_symbolic::operator=(const TNode_symbolic &other) {//перегрузка оператора присваивания
+TNode_symbolic& TNode_symbolic::operator=(const TNode_symbolic &other) {//РїРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂР° РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 
 	if (this == &other)
-		return *this; // присвоение самому себе, ничего делать не надо
+		return *this; // РїСЂРёСЃРІРѕРµРЅРёРµ СЃР°РјРѕРјСѓ СЃРµР±Рµ, РЅРёС‡РµРіРѕ РґРµР»Р°С‚СЊ РЅРµ РЅР°РґРѕ
 
 	delete[] child;
 
@@ -111,7 +111,7 @@ void TNode_symbolic::Init(bool gtype, int gfunc, int gn_var, int inheriters) {
 	if (type)
 	{
 
-		n_child = 2; //Бинарное дерево
+		n_child = 2; //Р‘РёРЅР°СЂРЅРѕРµ РґРµСЂРµРІРѕ
 		arn = 2;
 
 
@@ -126,7 +126,7 @@ void TNode_symbolic::Init(bool gtype, int gfunc, int gn_var, int inheriters) {
 		arn = 0;
 
 		if (true)
-			//Регрессия
+			//Р РµРіСЂРµСЃСЃРёСЏ
 		{
 			constant = rand() % 2;
 			n_child = 0;
@@ -144,7 +144,7 @@ void TNode_symbolic::Init(bool gtype, int gfunc, int gn_var, int inheriters) {
 		}
 		else if (problem == 1)
 		{
-			//Нечеткая логика
+			//РќРµС‡РµС‚РєР°СЏ Р»РѕРіРёРєР°
 			value = rand() % inheriters;
 
 			num_var = value;
@@ -160,7 +160,7 @@ __fastcall TNode_symbolic::~TNode_symbolic() {
 }
 
 //---------------------------------------------------------------------------
-//Нечеткая логика
+//РќРµС‡РµС‚РєР°СЏ Р»РѕРіРёРєР°
 void TNode_symbolic::Get_result(vector<int *>& rules, int n_vars, int *n_terms) {
 
 	if (type) {
@@ -184,7 +184,7 @@ void TNode_symbolic::Get_result(vector<int *>& rules, int n_vars, int *n_terms) 
 	}
 }
 //---------------------------------------------------------------------------
-//Регрессия
+//Р РµРіСЂРµСЃСЃРёСЏ
 double TNode_symbolic::Get_result(double *gvar) {
 	if (type) {
 
@@ -212,7 +212,7 @@ double TNode_symbolic::Get_result(double *gvar) {
 }
 //---------------------------------------------------------------------------
 string TNode_symbolic::Get_formula(string gsymbol) {
-	string formula; //Формула данного узла
+	string formula; //Р¤РѕСЂРјСѓР»Р° РґР°РЅРЅРѕРіРѕ СѓР·Р»Р°
 	if (type) {
 		if (num_layer != 0)	formula = "(";
 		for (int i = 0; i < n_child; i++) {
@@ -322,10 +322,10 @@ TNode_DE::TNode_DE(const TNode_DE &other) {
 
 }
 //---------------------------------------------------------------------------
-TNode_DE& TNode_DE::operator=(const TNode_DE &other) {//перегрузка оператора присваивания
+TNode_DE& TNode_DE::operator=(const TNode_DE &other) {//РїРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂР° РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 
 	if (this == &other)
-		return *this; // присвоение самому себе, ничего делать не надо
+		return *this; // РїСЂРёСЃРІРѕРµРЅРёРµ СЃР°РјРѕРјСѓ СЃРµР±Рµ, РЅРёС‡РµРіРѕ РґРµР»Р°С‚СЊ РЅРµ РЅР°РґРѕ
 
 	delete[] child;
 
@@ -365,7 +365,7 @@ void TNode_DE::Init(bool gtype, int gfunc, int gn_var, int inheriters) {
 	if (type)
 	{
 
-		n_child = 2; //Бинарное дерево
+		n_child = 2; //Р‘РёРЅР°СЂРЅРѕРµ РґРµСЂРµРІРѕ
 		arn = 2;
 
 
@@ -405,7 +405,7 @@ TNode_DE::~TNode_DE() {
 }
 
 //---------------------------------------------------------------------------
-//Регрессия
+//Р РµРіСЂРµСЃСЃРёСЏ
 double TNode_DE::Get_result(double *gvar) {
 	if (type) {
 
@@ -433,7 +433,7 @@ double TNode_DE::Get_result(double *gvar) {
 }
 //---------------------------------------------------------------------------
 string TNode_DE::Get_formula(string gsymbol) {
-	string formula; //Формула данного узла
+	string formula; //Р¤РѕСЂРјСѓР»Р° РґР°РЅРЅРѕРіРѕ СѓР·Р»Р°
 	if (type) {
 		if (num_layer != 0)	formula = "(";
 		for (int i = 0; i < n_child; i++) {

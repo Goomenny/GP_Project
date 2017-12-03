@@ -7,14 +7,14 @@ class TPopulation
 {
 
 protected:
-	Tree *tree; // Массив индивидов
-	Tree best_tree; 	// Лучший индивид
+	Tree *tree; // РњР°СЃСЃРёРІ РёРЅРґРёРІРёРґРѕРІ
+	Tree best_tree; 	// Р›СѓС‡С€РёР№ РёРЅРґРёРІРёРґ
 
-	int size_of_population; //Размер популяции
-	int *parent[2]; //Пулл родителей
-	int *tour; //Массив для номеров индивидов в турнире
+	int size_of_population; //Р Р°Р·РјРµСЂ РїРѕРїСѓР»СЏС†РёРё
+	int *parent[2]; //РџСѓР»Р» СЂРѕРґРёС‚РµР»РµР№
+	int *tour; //РњР°СЃСЃРёРІ РґР»СЏ РЅРѕРјРµСЂРѕРІ РёРЅРґРёРІРёРґРѕРІ РІ С‚СѓСЂРЅРёСЂРµ
 
-	double *proportional_probability; //Вероятность выбора дерева в родители
+	double *proportional_probability; //Р’РµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РІС‹Р±РѕСЂР° РґРµСЂРµРІР° РІ СЂРѕРґРёС‚РµР»Рё
 	double *rank_probability;
 
 	int x;
@@ -23,14 +23,14 @@ protected:
 public:
 	TPopulation();
 	~TPopulation();
-	TPopulation(const TPopulation<Tree> &); //Копиконструктор
-	TPopulation& operator=(const TPopulation<Tree> &); //Копирование популяции
+	TPopulation(const TPopulation<Tree> &); //РљРѕРїРёРєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+	TPopulation& operator=(const TPopulation<Tree> &); //РљРѕРїРёСЂРѕРІР°РЅРёРµ РїРѕРїСѓР»СЏС†РёРё
 
-	void Init(int); //Инициализация популяции (размер)
-	void Init_randomly_tree(int, int, int, int); //Случайная инициализация индивидов (размер, макс глубина дерева, кол-во переменных)
+	void Init(int); //РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїРѕРїСѓР»СЏС†РёРё (СЂР°Р·РјРµСЂ)
+	void Init_randomly_tree(int, int, int, int); //РЎР»СѓС‡Р°Р№РЅР°СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РёРЅРґРёРІРёРґРѕРІ (СЂР°Р·РјРµСЂ, РјР°РєСЃ РіР»СѓР±РёРЅР° РґРµСЂРµРІР°, РєРѕР»-РІРѕ РїРµСЂРµРјРµРЅРЅС‹С…)
 	void ReInit_trees(int, int, int, int);
-	void Proportional_selection(); //Пропорциональная селекция
-	void Rank_selection();      //Ранговая селекция
+	void Proportional_selection(); //РџСЂРѕРїРѕСЂС†РёРѕРЅР°Р»СЊРЅР°СЏ СЃРµР»РµРєС†РёСЏ
+	void Rank_selection();      //Р Р°РЅРіРѕРІР°СЏ СЃРµР»РµРєС†РёСЏ
 
 
 
@@ -50,7 +50,7 @@ public:
 	double Get_tree_fitness(int) const;
 	int Get_best_tree_deep();
 
-	//Временные функции
+	//Р’СЂРµРјРµРЅРЅС‹Рµ С„СѓРЅРєС†РёРё
 	int Get_max_deep();
 
 
@@ -83,8 +83,8 @@ TPopulation<Tree>::~TPopulation() {
 template<class Tree>
 TPopulation<Tree>::TPopulation(const TPopulation<Tree> &other) {
 
-	this->best_tree = other.best_tree; 	// Лучший индивид
-	this->size_of_population = other.size_of_population; //Размер популяции
+	this->best_tree = other.best_tree; 	// Р›СѓС‡С€РёР№ РёРЅРґРёРІРёРґ
+	this->size_of_population = other.size_of_population; //Р Р°Р·РјРµСЂ РїРѕРїСѓР»СЏС†РёРё
 
 	this->tree = new Tree[size_of_population];
 	this->proportional_probability = new double[size_of_population];
@@ -111,8 +111,8 @@ TPopulation<Tree>& TPopulation<Tree>::operator=(const TPopulation<Tree>  &other)
 	delete[]proportional_probability;
 	delete[]rank_probability;
 
-	this->best_tree = other.best_tree; 	// Лучший индивид
-	this->size_of_population = other.size_of_population; //Размер популяции
+	this->best_tree = other.best_tree; 	// Р›СѓС‡С€РёР№ РёРЅРґРёРІРёРґ
+	this->size_of_population = other.size_of_population; //Р Р°Р·РјРµСЂ РїРѕРїСѓР»СЏС†РёРё
 
 	this->tree = new Tree[size_of_population];
 	this->proportional_probability = new double[size_of_population];
@@ -154,11 +154,11 @@ void TPopulation<Tree>::Init_randomly_tree(int max_deep, int dimension, int grow
 
 //---------------------------------------------------------------------------
 
-//Пропорциональная селекция
+//РџСЂРѕРїРѕСЂС†РёРѕРЅР°Р»СЊРЅР°СЏ СЃРµР»РµРєС†РёСЏ
 template<class Tree>
 void TPopulation<Tree>::Proportional_selection()
 {
-	double sum = 0; //Сумма всех пригодностей
+	double sum = 0; //РЎСѓРјРјР° РІСЃРµС… РїСЂРёРіРѕРґРЅРѕСЃС‚РµР№
 	for (int i = 0; i < size_of_population; i++) {
 		sum += tree[i].Get_fitness();
 	}
@@ -168,11 +168,11 @@ void TPopulation<Tree>::Proportional_selection()
 
 }
 //---------------------------------------------------------------------------
-//Ранговая селекция
+//Р Р°РЅРіРѕРІР°СЏ СЃРµР»РµРєС†РёСЏ
 template<class Tree>
 void TPopulation<Tree>::Rank_selection()
-{   /* Можно ускорить, убрать объявление и удаление)
-	(С одинаковым fitness разная вероятность, НУЖНО усреднять) */
+{   /* РњРѕР¶РЅРѕ СѓСЃРєРѕСЂРёС‚СЊ, СѓР±СЂР°С‚СЊ РѕР±СЉСЏРІР»РµРЅРёРµ Рё СѓРґР°Р»РµРЅРёРµ)
+	(РЎ РѕРґРёРЅР°РєРѕРІС‹Рј fitness СЂР°Р·РЅР°СЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ, РќРЈР–РќРћ СѓСЃСЂРµРґРЅСЏС‚СЊ) */
 	double *fitness_tmp = new double[size_of_population];
 	int *num_gen = new int[size_of_population];
 	int h = size_of_population / 2;
@@ -183,7 +183,7 @@ void TPopulation<Tree>::Rank_selection()
 		num_gen[i] = i;
 	}
 
-	//Сортировка массива методом Шелла
+	//РЎРѕСЂС‚РёСЂРѕРІРєР° РјР°СЃСЃРёРІР° РјРµС‚РѕРґРѕРј РЁРµР»Р»Р°
 	while (h>0)
 	{
 		for (int i = 0; i<size_of_population - h; i++)
@@ -229,7 +229,7 @@ int TPopulation<Tree>::Get_parent(int type_of_selection, int size_of_tour)
 
 	if (type_of_selection<2) {
 		switch (type_of_selection) {
-		case 0:  //Пропорциональная селекция
+		case 0:  //РџСЂРѕРїРѕСЂС†РёРѕРЅР°Р»СЊРЅР°СЏ СЃРµР»РµРєС†РёСЏ
 			ran = rand() % 10000;
 			ran /= 10000.;
 			for (int i = 0; i < size_of_population; i++)
@@ -239,7 +239,7 @@ int TPopulation<Tree>::Get_parent(int type_of_selection, int size_of_tour)
 					return i;
 			}
 			break;
-		case 1: //Ранговая селекция
+		case 1: //Р Р°РЅРіРѕРІР°СЏ СЃРµР»РµРєС†РёСЏ
 			ran = rand() % 10000;
 			ran /= 10000.;
 			for (int i = 0; i < size_of_population; i++)
@@ -253,7 +253,7 @@ int TPopulation<Tree>::Get_parent(int type_of_selection, int size_of_tour)
 
 	}
 	else {
-		//Турнирная селекция /* TODO : Переписать через вектора (для неповторяющегося выбора) */
+		//РўСѓСЂРЅРёСЂРЅР°СЏ СЃРµР»РµРєС†РёСЏ /* TODO : РџРµСЂРµРїРёСЃР°С‚СЊ С‡РµСЂРµР· РІРµРєС‚РѕСЂР° (РґР»СЏ РЅРµРїРѕРІС‚РѕСЂСЏСЋС‰РµРіРѕСЃСЏ РІС‹Р±РѕСЂР°) */
 		for (int i = 0; i < size_of_tour; i++)
 		{
 			do
@@ -306,15 +306,15 @@ void TPopulation<Tree>::Selection(bool selfconfiguration, const vector<int> &typ
 
 
 }
-//Получение потомка
+//РџРѕР»СѓС‡РµРЅРёРµ РїРѕС‚РѕРјРєР°
 template<class Tree>
 void TPopulation<Tree>::Evolve(const TPopulation<Tree> &last_population, const vector<int> &type_of_crossover) {
 
 	this->tree[0] = last_population.best_tree;
 	for (int i = 1; i < size_of_population; i++) {
-		//Пытаемся скрестить
+		//РџС‹С‚Р°РµРјСЃСЏ СЃРєСЂРµСЃС‚РёС‚СЊ
 		if (!this->tree[i].Crossover(type_of_crossover[i], last_population.tree[last_population.parent[0][i]], last_population.tree[last_population.parent[1][i]]))
-			this->tree[i] = last_population.tree[last_population.parent[rand() % 2][i]]; //если неудача до копируем одного из родителей
+			this->tree[i] = last_population.tree[last_population.parent[rand() % 2][i]]; //РµСЃР»Рё РЅРµСѓРґР°С‡Р° РґРѕ РєРѕРїРёСЂСѓРµРј РѕРґРЅРѕРіРѕ РёР· СЂРѕРґРёС‚РµР»РµР№
 
 	}
 

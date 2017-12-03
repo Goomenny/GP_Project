@@ -26,9 +26,9 @@ int TGp_symbolic::Start_fast(double **data, double *y, int size_of_data, double 
 		}
 
 		if (selfconfiguration) {
-			//Сбрасываем вероятности выбора операторов
+			//РЎР±СЂР°СЃС‹РІР°РµРј РІРµСЂРѕСЏС‚РЅРѕСЃС‚Рё РІС‹Р±РѕСЂР° РѕРїРµСЂР°С‚РѕСЂРѕРІ
 			Reset_probabilities();
-			// Выбираем операторы для первой эволюции
+			// Р’С‹Р±РёСЂР°РµРј РѕРїРµСЂР°С‚РѕСЂС‹ РґР»СЏ РїРµСЂРІРѕР№ СЌРІРѕР»СЋС†РёРё
 			Select_operators();
 		}
 	}
@@ -62,7 +62,7 @@ int TGp_symbolic::Start_fast(double **data, double *y, int size_of_data, double 
 
 			if (selfconfiguration && i != 0)
 			{
-				//Пересчитываем вероятности операторов
+				//РџРµСЂРµСЃС‡РёС‚С‹РІР°РµРј РІРµСЂРѕСЏС‚РЅРѕСЃС‚Рё РѕРїРµСЂР°С‚РѕСЂРѕРІ
 
 				tmp.clear();
 				for (int ind = 0; ind<size_of_population; ind++) {
@@ -109,9 +109,9 @@ int TGp_fuzzy::Start_fast(TFuzzy& fuzzy, bool restart) {
 
 
 		if (selfconfiguration) {
-			//Сбрасываем вероятности выбора операторов
+			//РЎР±СЂР°СЃС‹РІР°РµРј РІРµСЂРѕСЏС‚РЅРѕСЃС‚Рё РІС‹Р±РѕСЂР° РѕРїРµСЂР°С‚РѕСЂРѕРІ
 			Reset_probabilities();
-			// Выбираем операторы для первой эволюции
+			// Р’С‹Р±РёСЂР°РµРј РѕРїРµСЂР°С‚РѕСЂС‹ РґР»СЏ РїРµСЂРІРѕР№ СЌРІРѕР»СЋС†РёРё
 			Select_operators();
 		}
 	}
@@ -145,7 +145,7 @@ int TGp_fuzzy::Start_fast(TFuzzy& fuzzy, bool restart) {
 
 			if (selfconfiguration && i != 0)
 			{
-				//Пересчитываем вероятности операторов
+				//РџРµСЂРµСЃС‡РёС‚С‹РІР°РµРј РІРµСЂРѕСЏС‚РЅРѕСЃС‚Рё РѕРїРµСЂР°С‚РѕСЂРѕРІ
 				tmp.clear();
 				for (int ind = 0; ind<size_of_population; ind++) {
 					tmp.push_back(last_population.Get_tree_fitness(ind));

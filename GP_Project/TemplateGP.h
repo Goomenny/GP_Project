@@ -23,7 +23,7 @@ protected:
 	int x;
 public:
 
-	void Init(bool, int, int, int, int, int, int, int, int, int, int, double, int);  //Инициализация
+	void Init(bool, int, int, int, int, int, int, int, int, int, int, double, int);  //РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
 
 
 	double Get_fitness();
@@ -53,7 +53,7 @@ void TGp <Population> ::Init(bool selfconfiguration, int num_func, int size_of_p
 
 	this->num_func = num_func;
 
-	//Резервируем память для массивов с примененными операторами
+	//Р РµР·РµСЂРІРёСЂСѓРµРј РїР°РјСЏС‚СЊ РґР»СЏ РјР°СЃСЃРёРІРѕРІ СЃ РїСЂРёРјРµРЅРµРЅРЅС‹РјРё РѕРїРµСЂР°С‚РѕСЂР°РјРё
 	this->type_of_selection.resize(size_of_population);
 	this->size_of_tour.resize(size_of_population);
 	this->type_of_crossover.resize(size_of_population);
@@ -67,7 +67,7 @@ void TGp <Population> ::Init(bool selfconfiguration, int num_func, int size_of_p
 			this->type_of_mutation.push_back(type_of_mutation);
 		}
 	}
-	// Записываем остальные настройки
+	// Р—Р°РїРёСЃС‹РІР°РµРј РѕСЃС‚Р°Р»СЊРЅС‹Рµ РЅР°СЃС‚СЂРѕР№РєРё
 	this->selfconfiguration = selfconfiguration;
 	this->size_of_population = size_of_population;
 	this->max_number_of_populations = max_number_of_populations;
@@ -80,10 +80,10 @@ void TGp <Population> ::Init(bool selfconfiguration, int num_func, int size_of_p
 	this->dimension = dimension;
 	this->growth = growth;
 	this->inheriters = inheriters;
-	//Случайно инициализируем первое поколение
+	//РЎР»СѓС‡Р°Р№РЅРѕ РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїРµСЂРІРѕРµ РїРѕРєРѕР»РµРЅРёРµ
 	last_population.Init(size_of_population);
 	last_population.Init_randomly_tree(max_deep, dimension, growth, inheriters);
-	//Инициализируем место для следующиего поколения
+	//РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РјРµСЃС‚Рѕ РґР»СЏ СЃР»РµРґСѓСЋС‰РёРµРіРѕ РїРѕРєРѕР»РµРЅРёСЏ
 	new_population.Init(size_of_population);
 
 }

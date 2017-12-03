@@ -14,29 +14,29 @@ class TTree
 {
 
 protected:
-	Node **node; //РњР°СЃСЃРёРІ СѓР·Р»РѕРІ
+	Node **node; //Массив узлов
 
-	int deep; // РўРµРєСѓС‰Р°СЏ РіР»СѓР±РёРЅР° РґРµСЂРµРІР°
-	int max_deep; //РљРѕР»-РІРѕ СЃР»РѕРµРІ
-	int *n_node; //РљРѕР»-РІРѕ СѓР·Р»РѕРІ РЅР° СЃР»РѕРµ
-	int n_var;    //Р Р°Р·РјРµСЂРЅРѕСЃС‚СЊ РїРµСЂРµРјРµРЅРЅС‹С… (СЂРµС€Р°РµРјРѕР№ Р·Р°РґР°С‡Рё)
+	int deep; // Текущая глубина дерева
+	int max_deep; //Кол-во слоев
+	int *n_node; //Кол-во узлов на слое
+	int n_var;    //Размерность переменных (решаемой задачи)
 
-	double fitness; //РџСЂРёРіРѕРґРЅРѕСЃС‚СЊ РґРµСЂРµРІР°
+	double fitness; //Пригодность дерева
 
 
 
 public:
 	TTree<Node>();
 	~TTree<Node>();
-	TTree<Node>(const TTree<Node> &); //РљРѕРїРёРєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
-	TTree<Node>& operator=(const TTree<Node> &); //РљРѕРїРёСЂРѕРІР°РЅРёРµ РґРµСЂРµРІР°
+	TTree<Node>(const TTree<Node> &); //Копиконструктор
+	TTree<Node>& operator=(const TTree<Node> &); //Копирование дерева
 
-	void Init(int, int, int, int); //РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґРµСЂРµРІР°
-	bool Crossover(int, const TTree<Node>&, const TTree<Node>&); //РЎРєСЂРµС‰РёРІР°РЅРёРµ РґРµСЂРµРІСЊРµРІ (РѕСЂРёРіРёРЅР°Р», РІС‚РѕСЂРѕРµ РґРµСЂРµРІРѕ, РёРЅРґРµРєСЃС‹ СѓР·Р»РѕРІ СЃРєСЂРµС‰РёРІР°РЅРёСЏ)
+	void Init(int, int, int, int); //Инициализация дерева
+	bool Crossover(int, const TTree<Node>&, const TTree<Node>&); //Скрещивание деревьев (оригинал, второе дерево, индексы узлов скрещивания)
 
 
 
-	inline bool SubTree(const Node&, const Node&); //РџСЂРѕРІРµСЂСЏРµРј СЏРІР»СЏРµС‚СЃСЏ Р»Рё РїРµСЂРІС‹Р№ СѓР·РµР» РїРѕРґРґРµСЂРµРІРѕРј РІС‚РѕСЂРѕРіРѕ
+	inline bool SubTree(const Node&, const Node&); //Проверяем является ли первый узел поддеревом второго
 	Crossover_index Get_crossover_index(int, const TTree<Node>&, const TTree<Node>&);
 
 	double Get_fitness();
@@ -96,10 +96,10 @@ TTree<Node>::TTree(const TTree<Node> &other) {
 }
 //---------------------------------------------------------------------------
 template<class Node>
-TTree<Node>& TTree<Node>::operator=(const TTree<Node> &other) {//РїРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂР° РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
+TTree<Node>& TTree<Node>::operator=(const TTree<Node> &other) {//перегрузка оператора присваивания
 
 	if (this == &other)
-		return *this; // РїСЂРёСЃРІРѕРµРЅРёРµ СЃР°РјРѕРјСѓ СЃРµР±Рµ, РЅРёС‡РµРіРѕ РґРµР»Р°С‚СЊ РЅРµ РЅР°РґРѕ
+		return *this; // присвоение самому себе, ничего делать не надо
 
 
 	for (int i = 0; i < this->deep; i++)
@@ -142,7 +142,7 @@ bool TTree<Node>::Crossover(int type_of_crossover, const TTree<Node> &origin, co
 	bool success = true;
 	if (this == &origin || this == &other)
 		return success = false;
-	int sum = 0;//Р’СЂРµРјРµРЅРЅР°СЏ СЃСѓРјРјР°
+	int sum = 0;//Временная сумма
 	int actual_deep;
 	int di;
 	Crossover_index index = Get_crossover_index(type_of_crossover, origin, other);
@@ -158,12 +158,12 @@ bool TTree<Node>::Crossover(int type_of_crossover, const TTree<Node> &origin, co
 
 		int iother=rand()%other.deep;
 		int jother=rand()%other.n_node[iother]; */
-		di = index.iother - index.iorigin; // Р Р°Р·РЅРѕСЃС‚СЊ СЃР»РѕРµРІ
+		di = index.iother - index.iorigin; // Разность слоев
 
 		actual_deep = (index.iorigin + 1) + other.node[index.iother][index.jother].Get_n_heirs();
 
 		if (origin.deep>actual_deep)
-			actual_deep = origin.deep;    //Р•СЃР»Рё РіР»СѓР±РёРЅР° СЃС‚Р°СЂРѕРіРѕ РѕСЃРЅРѕРІРЅРѕРіРѕ РґРµСЂРµРІР° Р±РѕР»СЊС€Рµ С‚Рѕ РѕСЃС‚Р°РІР»СЏРµРј РµРіРѕ РіР»СѓР±РёРЅСѓ
+			actual_deep = origin.deep;    //Если глубина старого основного дерева больше то оставляем его глубину
 
 		if (actual_deep <= origin.max_deep)
 		{
@@ -172,8 +172,8 @@ bool TTree<Node>::Crossover(int type_of_crossover, const TTree<Node> &origin, co
 			delete[] node;
 			delete[] n_node;
 
-			int jn = 0; // РС‚РµСЂСЂР°С‚РѕСЂ РїРѕ СѓР·Р»Р°Рј РЅРѕРІРѕРіРѕ РґРµСЂРµРІР°
-			bool crossed = false; // РЎРєСЂРµСЃС‚РёР»Рё Р»Рё СЌС‚РѕС‚ СЃР»РѕР№ РёР»Рё РЅРµС‚
+			int jn = 0; // Итерратор по узлам нового дерева
+			bool crossed = false; // Скрестили ли этот слой или нет
 
 			this->n_var = other.n_var;
 			this->deep = actual_deep;
@@ -192,10 +192,10 @@ bool TTree<Node>::Crossover(int type_of_crossover, const TTree<Node> &origin, co
 			this->n_node[1] = this->node[0][0].Get_n_child();
 
 			for (int in = 1; in < this->deep; in++) {
-				this->node[in] = new Node[this->n_node[in]]; //Р’С‹РґРµР»СЏРµРј РїР°РјСЏС‚СЊ РїРѕРґ РЅРѕРІС‹Р№ СЃР»РѕР№
+				this->node[in] = new Node[this->n_node[in]]; //Выделяем память под новый слой
 				crossed = false;
 				jn = 0;
-				if (in<origin.deep) //Р•СЃР»Рё РіР»СѓР±РёРЅР° РґРµСЂРµРІР° origin Р‘РѕР»СЊС€Рµ С‡РµРј С‚РµРєСѓС‰РёР№ СЃР»РѕР№
+				if (in<origin.deep) //Если глубина дерева origin Больше чем текущий слой
 				{
 					for (int jor = 0; jor < origin.n_node[in]; jor++) {
 
@@ -227,25 +227,25 @@ bool TTree<Node>::Crossover(int type_of_crossover, const TTree<Node> &origin, co
 				}
 
 				sum = 0;
-				//РЎРІСЏР·С‹РІР°РµРј СѓР·Р»С‹ РЅР° СЂР°Р·РЅС‹С… СЃР»РѕСЏС… (С‚РµРєСѓС‰РёР№ СЃР»РѕР№ РїСЂРёРІСЏР·С‹РІР°РµРј Рє РїСЂРµРґС‹РґСѓС‰РµРјСѓ)
-				for (int s = 0; s < this->n_node[in - 1]; s++) {   //РРґРµРј РїРѕ СѓР·Р»Р°Рј СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ СЃР»РѕСЏ
+				//Связываем узлы на разных слоях (текущий слой привязываем к предыдущему)
+				for (int s = 0; s < this->n_node[in - 1]; s++) {   //Идем по узлам родительского слоя
 
-					this->node[in - 1][s].Set_argument(this->node[in]);  //РЈРєР°Р·С‹РІР°РµРј РЅР° СЃР»РѕР№ СЃ РїРѕС‚РѕРјРєР°РјРё
-					for (int c = 0; c < this->node[in - 1][s].Get_n_child(); c++) {  //РРґРµРј РїРѕ РїРѕС‚РѕРјРєР°Рј РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ СѓР·Р»Р°
+					this->node[in - 1][s].Set_argument(this->node[in]);  //Указываем на слой с потомками
+					for (int c = 0; c < this->node[in - 1][s].Get_n_child(); c++) {  //Идем по потомкам конкретного узла
 
-						this->node[in][sum + c].Set_num_parent(s);     // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РЅРѕРјРµСЂ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ СѓР·Р»Р°
-						this->node[in][sum + c].Set_num_self(c); // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРІРѕР№ РЅРѕРјРµСЂ
+						this->node[in][sum + c].Set_num_parent(s);     // Устанавливаем номер родительского узла
+						this->node[in][sum + c].Set_num_self(c); // Устанавливаем свой номер
 						this->node[in][sum + c].Set_index(this->node[in - 1][s].Get_index());
-						this->node[in][sum + c].Add_index(to_string(this->node[in][sum + c].Get_num_self())); //Р¤РѕСЂРјРёСЂСѓРµРј Р°Р±СЃРѕР»СЋС‚РЅС‹Р№ РёРЅРґРµРєСЃ
-						this->node[in][sum + c].Set_num_layer(in); //РЈСЃС‚Р°РЅР°РІРёР»РёРІР°РµРј РЅРѕРјРµСЂ СЃР»РѕСЏ
-						this->node[in - 1][s].Set_child(c, sum + c); //Р—Р°РїРёСЃС‹РІР°РµРј РёРЅРґРµРєСЃС‹ РїРѕС‚РѕРјРєРѕРІ
+						this->node[in][sum + c].Add_index(to_string(this->node[in][sum + c].Get_num_self())); //Формируем абсолютный индекс
+						this->node[in][sum + c].Set_num_layer(in); //Устанавиливаем номер слоя
+						this->node[in - 1][s].Set_child(c, sum + c); //Записываем индексы потомков
 					}
-					sum += this->node[in - 1][s].Get_n_child();   //Р—Р°РїРёСЃС‹РІР°РµРј РєРѕР»-РІРѕ РїСЂРѕР№РґРµРЅРЅС‹С… СѓР·Р»РѕРІ РЅР° СЃР»РѕРµ
+					sum += this->node[in - 1][s].Get_n_child();   //Записываем кол-во пройденных узлов на слое
 				}
 
 
 
-				//РџРѕРґСЃС‡РёС‚С‹РІР°РµРј РЅРµРѕР±С…РѕРґРёРјРѕРµ РєРѕР»-РІРѕ СѓР·Р»РѕРІ РЅР° СЃР»РµРґ СЃР»РѕРµ
+				//Подсчитываем необходимое кол-во узлов на след слое
 				if (in + 1 != deep) {
 					sum = 0;
 					for (int j = 0; j < this->n_node[in]; j++) {
@@ -271,47 +271,47 @@ bool TTree<Node>::Crossover(int type_of_crossover, const TTree<Node> &origin, co
 //---------------------------------------------------------------------------
 template<class Node>
 void TTree<Node>::Init(int gmaxdeep, int gn_var, int growth, int inheriters) {
-	int sum = 0;//Р’СЂРµРјРµРЅРЅР°СЏ СЃСѓРјРјР°
+	int sum = 0;//Временная сумма
 
 
 	n_var = gn_var;
 	max_deep = gmaxdeep;
 	n_node = new int[max_deep];
 	node = new Node *[max_deep];
-	n_node[0] = 1; //РЅР° 1 СЃР»РѕРµ РІСЃРµРіРґР° 1 СѓР·РµР»(РєРѕСЂРµРЅСЊ)
-	node[0] = new Node[1];  //РЎРѕР·РґР°РµРј РєРѕСЂРµРЅСЊ
+	n_node[0] = 1; //на 1 слое всегда 1 узел(корень)
+	node[0] = new Node[1];  //Создаем корень
 	node[0][0].Init(true, rand() % 4, n_var, inheriters);
 	node[0][0].Set_num_layer(0);
 	node[0][0].Set_num_self(0);
 	node[0][0].Set_index("0");
-	n_node[1] = node[0][0].Get_n_child(); //РЈР·РЅР°РµРј СЃРєРѕР»СЊРєРѕ РїРѕС‚РѕРјРєРѕРІ Сѓ РєРѕСЂРЅСЏ
+	n_node[1] = node[0][0].Get_n_child(); //Узнаем сколько потомков у корня
 
 	for (int i = 1; i < max_deep; i++) {
-		node[i] = new Node[n_node[i]]; //Р”РѕР±Р°РІР»СЏРµРј СЃР»РѕР№ СЃ РїРѕС‚РѕРјРєР°РјРё
+		node[i] = new Node[n_node[i]]; //Добавляем слой с потомками
 
 		sum = 0;
-		//РЎРІСЏР·С‹РІР°РµРј СѓР·Р»С‹ РЅР° СЂР°Р·РЅС‹С… СЃР»РѕСЏС… (С‚РµРєСѓС‰РёР№ СЃР»РѕР№ РїСЂРёРІСЏР·С‹РІР°РµРј Рє РїСЂРµРґС‹РґСѓС‰РµРјСѓ)
-		for (int s = 0; s < n_node[i - 1]; s++) {   //РРґРµРј РїРѕ СѓР·Р»Р°Рј СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ СЃР»РѕСЏ
+		//Связываем узлы на разных слоях (текущий слой привязываем к предыдущему)
+		for (int s = 0; s < n_node[i - 1]; s++) {   //Идем по узлам родительского слоя
 
-			node[i - 1][s].Set_argument(node[i]);  //РЈРєР°Р·С‹РІР°РµРј РЅР° СЃР»РѕР№ СЃ РїРѕС‚РѕРјРєР°РјРё
-			for (int c = 0; c < node[i - 1][s].Get_n_child(); c++) {  //РРґРµРј РїРѕ РїРѕС‚РѕРјРєР°Рј РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ СѓР·Р»Р°
+			node[i - 1][s].Set_argument(node[i]);  //Указываем на слой с потомками
+			for (int c = 0; c < node[i - 1][s].Get_n_child(); c++) {  //Идем по потомкам конкретного узла
 
 				if (i + 1 != max_deep) {
-					if (growth == 0) 		node[i][sum + c].Init(true, rand() % 4, n_var, inheriters); //РџРѕР»РЅС‹Р№ СЂРѕСЃС‚
-					else 		   	node[i][sum + c].Init(rand() % 2, rand() % 4, n_var, inheriters); //РќРµРїРѕР»РЅС‹Р№ СЂРѕСЃС‚
+					if (growth == 0) 		node[i][sum + c].Init(true, rand() % 4, n_var, inheriters); //Полный рост
+					else 		   	node[i][sum + c].Init(rand() % 2, rand() % 4, n_var, inheriters); //Неполный рост
 				}
-				else 				node[i][sum + c].Init(false, NULL, n_var, inheriters); //РљСЂР°Р№РЅРёР№ СЃР»РѕР№
+				else 				node[i][sum + c].Init(false, NULL, n_var, inheriters); //Крайний слой
 
-				node[i][sum + c].Set_num_parent(s);     // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РЅРѕРјРµСЂ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ СѓР·Р»Р°
-				node[i][sum + c].Set_num_self(c); // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРІРѕР№ РЅРѕРјРµСЂ
+				node[i][sum + c].Set_num_parent(s);     // Устанавливаем номер родительского узла
+				node[i][sum + c].Set_num_self(c); // Устанавливаем свой номер
 				node[i][sum + c].Set_index(node[i - 1][s].Get_index());
-				node[i][sum + c].Add_index(to_string(node[i][sum + c].Get_num_self())); //Р¤РѕСЂРјРёСЂСѓРµРј Р°Р±СЃРѕР»СЋС‚РЅС‹Р№ РёРЅРґРµРєСЃ
-				node[i][sum + c].Set_num_layer(i); //РЈСЃС‚Р°РЅР°РІРёР»РёРІР°РµРј РЅРѕРјРµСЂ СЃР»РѕСЏ
-				node[i - 1][s].Set_child(c, sum + c); //Р—Р°РїРёСЃС‹РІР°РµРј РёРЅРґРµРєСЃС‹ РїРѕС‚РѕРјРєРѕРІ
+				node[i][sum + c].Add_index(to_string(node[i][sum + c].Get_num_self())); //Формируем абсолютный индекс
+				node[i][sum + c].Set_num_layer(i); //Устанавиливаем номер слоя
+				node[i - 1][s].Set_child(c, sum + c); //Записываем индексы потомков
 			}
-			sum += node[i - 1][s].Get_n_child();   //Р—Р°РїРёСЃС‹РІР°РµРј РєРѕР»-РІРѕ РїСЂРѕР№РґРµРЅРЅС‹С… СѓР·Р»РѕРІ РЅР° СЃР»РѕРµ
+			sum += node[i - 1][s].Get_n_child();   //Записываем кол-во пройденных узлов на слое
 		}
-		//РџРѕРґСЃС‡РёС‚С‹РІР°РµРј РЅРµРѕР±С…РѕРґРёРјРѕРµ РєРѕР»-РІРѕ СѓР·Р»РѕРІ РЅР° СЃР»РµРґ СЃР»РѕРµ
+		//Подсчитываем необходимое кол-во узлов на след слое
 		if (i + 1 != max_deep) {
 			sum = 0;
 			for (int j = 0; j < n_node[i]; j++) {
@@ -324,7 +324,7 @@ void TTree<Node>::Init(int gmaxdeep, int gn_var, int growth, int inheriters) {
 
 	}
 
-	//РЎС‡РёС‚Р°РµРј Р°РєС‚СѓР°Р»СЊРЅСѓСЋ РіР»СѓР±РёРЅСѓ РґРµСЂРµРІР°
+	//Считаем актуальную глубину дерева
 	for (int i = 0; i < max_deep; i++) {
 		if (n_node[i] == 0) {
 			deep = i;
@@ -379,7 +379,7 @@ Crossover_index TTree<Node>::Get_crossover_index(int type_of_crossover, const TT
 
 		index.iorigin = rand() % (origin.deep - 1) + 1;
 		index.jorigin = rand() % origin.n_node[index.iorigin];
-		index.iother = rand() % other.deep;  //РњРѕР¶РµРј РІС‹Р±СЂР°С‚СЊ РєРѕСЂРЅРµРІРѕР№ СѓР·РµР» РІ РєР°С‡РµСЃС‚РІРµ РїРѕРґРґРµСЂРµРІР°
+		index.iother = rand() % other.deep;  //Можем выбрать корневой узел в качестве поддерева
 		index.jother = rand() % other.n_node[index.iother];
 		index.ready = true;
 	}
@@ -389,10 +389,10 @@ Crossover_index TTree<Node>::Get_crossover_index(int type_of_crossover, const TT
 		vector<int> iother;
 		vector<int> jorigin;
 
-		for (int i = 0; i < origin.deep; i++) { //РРґРµРј РїРѕ СЃР»РѕСЏРј origin
-			if (i<other.deep)   //Р•СЃР»Рё РµСЃС‚СЊ РѕРґРёРЅР°РєРѕРІС‹Р№ СЃР»РѕР№ РІ РѕР±РѕРёС… РґРµСЂРµРІСЊСЏС…
-				for (int jor = 0; jor < origin.n_node[i]; jor++) {  //РРґРµРј РїРѕ СѓР·Р»Р°Рј РІ origin Р±СѓРґРµРј РёСЃРєР°С‚СЊ РёРј РїР°СЂСѓ
-					for (int jot = jor; jot < other.n_node[i]; jot++) {  //РРґРµРј РїРѕ СѓР·Р°Рј other РїСЂРѕРІРµСЂСЏРµРј СЏРІР»СЏРµС‚СЃСЏ Р»Рё РѕРЅ РїР°СЂРѕР№ РґР»СЏ jor
+		for (int i = 0; i < origin.deep; i++) { //Идем по слоям origin
+			if (i<other.deep)   //Если есть одинаковый слой в обоих деревьях
+				for (int jor = 0; jor < origin.n_node[i]; jor++) {  //Идем по узлам в origin будем искать им пару
+					for (int jot = jor; jot < other.n_node[i]; jot++) {  //Идем по узам other проверяем является ли он парой для jor
 						if (origin.node[i][jor].Get_index() == other.node[i][jot].Get_index() && origin.node[i][jor].Get_type() == true && other.node[i][jot].Get_type() == true && origin.node[i][jor].Get_arn() == other.node[i][jot].Get_arn()) {
 							for (int jorc = 0; jorc < origin.node[i][jor].Get_n_child(); jorc++) {
 								iorigin.push_back(i + 1);
@@ -403,7 +403,7 @@ Crossover_index TTree<Node>::Get_crossover_index(int type_of_crossover, const TT
 								jother.push_back(other.node[i][jot].Get_child(jotc));
 							}
 
-							break; //РџСЂРµСЂС‹РІР°РµРј РµСЃР»Рё СѓР¶Рµ РЅР°С€Р»Рё РїР°СЂСѓ РґР»СЏ РґР°РЅРЅРѕРіРѕ СѓР·Р»Р°, РїРµСЂРµС…РѕРґРёРј Рє СЃР»РµРґ СѓР·Р»Сѓ РІ origin
+							break; //Прерываем если уже нашли пару для данного узла, переходим к след узлу в origin
 						}
 					}
 				}
@@ -421,7 +421,7 @@ Crossover_index TTree<Node>::Get_crossover_index(int type_of_crossover, const TT
 			index.ready = true;
 		}
 		else {
-			index.ready = false; //Р•СЃР»Рё РЅРµС‚ РѕР±С‰РµРіРѕ РїРѕР»СЏ
+			index.ready = false; //Если нет общего поля
 		}
 
 	}
