@@ -97,7 +97,7 @@ VHML_Result=-x*sin(sqrt(fabs(x-(y+47.))))-(y+47)*sin(sqrt(fabs(x/2.+47+y)));
 return VHML_Result;
 }
 
-double HML_TestFunction_Griewangk(double *x, int VHML_N, long *nfeval)
+double HML_TestFunction_Griewangk(double *x, double *bias, int VHML_N, long *nfeval)
 {
 /*
 Функция многих переменных: функция Гриванка.
@@ -284,7 +284,7 @@ return VHML_Result;
 }
 //---------------------------------------------------------------------------
 
-double HML_TestFunction_ParaboloidOfRevolution(double *x, int VHML_N)
+double HML_TestFunction_ParaboloidOfRevolution(double *x, double *bias, int VHML_N, long *nfeval)
 {
 /*
 Функция многих переменных: Эллиптический параболоид.
@@ -295,8 +295,13 @@ double HML_TestFunction_ParaboloidOfRevolution(double *x, int VHML_N)
 Возвращаемое значение:
  Значение тестовой функции в точке x.
 */
+
+
 double VHML_Result=0;
-for (int i=0;i<VHML_N;i++) VHML_Result+=x[i]*x[i];
+for (int i=0;i<VHML_N;i++) VHML_Result+=(x[i]+bias[i])*(x[i]+bias[i]);
+
+(*nfeval)++;
+
 return VHML_Result;
 }
 //---------------------------------------------------------------------------

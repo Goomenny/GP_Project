@@ -59,7 +59,7 @@ double rnd_uni(long * idum)
 
 }
 
-void TDE::Init(double(*evaluate)(double[], int,  long *))
+void TDE::Init(double(*evaluate)(double[], double*, int,  long *),double *bias)
 {
 
 	strategy = 11;     // choice of strategy
@@ -89,7 +89,8 @@ void TDE::Init(double(*evaluate)(double[], int,  long *))
 			r = rnd_uni(&rnd_uni_init);
 			c[i][j] = inibound_l + r*(inibound_h - inibound_l);
 		}
-		energy[i] = evaluate(c[i], D, &nfeval);
+
+		energy[i] = evaluate(c[i],bias, D, &nfeval);
 		// printf("%2d %20.8f %3d\n", i, energy[i], nfeval);
 		// cin.get(ch);
 	}
@@ -122,7 +123,7 @@ int TDE::CopyArray(double dest[MAXPOP][MAXDIM], double src[MAXPOP][MAXDIM])
 		return 0;
 }
 
-double TDE::Start_fast(double(*evaluate)(double[], int,  long *), TTree_symbolic & tree)
+double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), double *bias, TTree_symbolic & tree)
 {
 	CopyVector(best, c[imin]);
 	CopyVector(bestit, c[imin]);
@@ -354,7 +355,7 @@ double TDE::Start_fast(double(*evaluate)(double[], int,  long *), TTree_symbolic
 			}
 
 			// Trial mutation now in tmp[]. Test how good this choice really was.
-			trial_energy = evaluate(tmp, D, &nfeval);  // Evaluate new vector in tmp[]
+			trial_energy = evaluate(tmp, bias, D, &nfeval);  // Evaluate new vector in tmp[]
 													   // improved objective function value?
 			if (trial_energy <= energy[i]) {
 				energy[i] = trial_energy;
@@ -387,5 +388,6 @@ double TDE::Start_fast(double(*evaluate)(double[], int,  long *), TTree_symbolic
 		CopyArray(newarray, swaparray);
 
 	}
+
 	return emin;
 }

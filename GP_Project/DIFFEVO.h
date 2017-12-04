@@ -48,11 +48,11 @@ private:
 	double r;
 
 public:
-	void Init(double(*evaluate)(double[], int, long *));
+	void Init(double(*evaluate)(double[], double *, int, long *), double *bias);
 	int CopyVector(double a[], double b[]);
 	int CopyArray(double dest[MAXPOP][MAXDIM], double src[MAXPOP][MAXDIM]);
-	double Start_fast(double(*evaluate)(double[], int, long *), TTree_symbolic &tree );
+	double Start_fast(double(*evaluate)(double[],double *, int, long *),double *bias, TTree_symbolic &tree );
 
-
+	double *Get_bestx() { return best; };
 };
 double rnd_uni(long *idum);

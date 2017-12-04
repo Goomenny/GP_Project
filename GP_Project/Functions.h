@@ -1,7 +1,10 @@
-#pragma once
+﻿#pragma once
 #include "HarrixMathLibrary.h"
 #include "TTree.h"
 #include "DIFFEVO.h"
+#include <iostream>
+using namespace std;
+
 class TTest
 {
 public:
@@ -9,6 +12,7 @@ public:
 
 	double Get_reliability() { return reliability; };
 	double Get_meanresult() { return meanresult; };
+	double Get_meanx() { return meanx; };
 
 private:
 	TDE optimizer;
@@ -17,25 +21,55 @@ private:
 
 	double reliability = 0;
 	double meanresult = 0;
-
+	double meanx = 0;
 	double result;
+	int D = 3; //Размерность оптимизации
+	double bias[3]; //Вектор смещений оптимума
 
 };
 
 void TTest::Calculate( TTree_symbolic &tree) {
 	
-	
+	bool found = false;
+	double *x;
+	double tmpx;
+	double tmpmeanx=0;
+	meanx = 0;
+	reliability = 0;
+	meanresult = 0;
+
 	for (int i = 0; i < runs; i++)
 	{
-		optimizer.Init(HML_TestFunction_Griewangk);
-		result = optimizer.Start_fast(HML_TestFunction_Griewangk,tree);
+
+		for (int d = 0; d < D; d++)
+		{
+			bias[d] = (rand() % 10001) / 1000. - 5;
+		}
+
+		optimizer.Init(HML_TestFunction_ParaboloidOfRevolution,bias);
+		result = optimizer.Start_fast(HML_TestFunction_ParaboloidOfRevolution,bias,tree);
 
 		meanresult += fabs(result);
 
-		if (result < eps) reliability++;
+		x = optimizer.Get_bestx();
+
+		tmpmeanx = 0;
+		found = true;
+		for (int d = 0; d < D; d++)
+		{
+			tmpx = (x[d] + bias[d])*(x[d] + bias[d]);
+			if (tmpx > eps) found= false;
+			tmpmeanx +=tmpx;
+		}
+
+		meanx += pow(tmpmeanx, 0.5);
+
+		if (found) reliability++;
 	}
-	reliability /= double(runs) ;
+	reliability /= double(runs);
 	meanresult /= double(runs);
+	meanx /= double(runs);
+
 }
 
 	

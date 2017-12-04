@@ -42,7 +42,6 @@ int Max(const double* arr, int size) {
 }
 //---------------------------------------------------------------------------
 void regress(){
-	srand(time(NULL));
 int num_func = 0; //Функция
 TGp_symbolic gp;
 double **var, *y;
@@ -200,7 +199,7 @@ int main() {
 
 	TTest test;
 	test.Calculate(Tree);
-	cout <<Tree.Get_formula() <<endl << test.Get_meanresult() << endl << test.Get_reliability();
+	cout << Tree.Get_formula() << endl << test.Get_meanresult() << endl << test.Get_reliability() << endl<<test.Get_meanx()<<endl;
 	//regress();
 	/*
 	Tree.Calculate_fitness();
