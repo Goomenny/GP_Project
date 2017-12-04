@@ -53,7 +53,7 @@ void TTree_symbolic::Calculate_fitness()
 void TTree_symbolic::Mutate(int type_of_mutation, double probability_of_mutation) {
 	double ran = 0;
 	int last_func = 0;
-	int a[2] = { 0,2 }, b[2] = { 1,3 };
+	int a[3] = { 0,1,2 }, b[1] = { 3 };
 	switch (type_of_mutation) {
 	case 0:
 		probability_of_mutation = 1. / (5 * deep);
@@ -76,11 +76,11 @@ void TTree_symbolic::Mutate(int type_of_mutation, double probability_of_mutation
 				if (probability_of_mutation>ran) {
 
 					while (node[i][j].Get_func() == last_func) {
-						if (last_func == 0 || last_func == 2) {
-							node[i][j].Set_func(a[rand() % 2]);
+						if (last_func != 3) {
+							node[i][j].Set_func(a[rand() % 3]);
 						}
 						else {
-							node[i][j].Set_func(b[rand() % 2]);
+							node[i][j].Set_func(b[rand() % 1]);
 						}
 					}
 

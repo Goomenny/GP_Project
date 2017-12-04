@@ -194,14 +194,53 @@ void fuzzy() {
 int main() {
 	srand(time(NULL));
 
-	TTree_symbolic Tree;
+	TGp_DE gp;
+
+
+	int n_var = 7;
+
+	int inheriters = 2;
+	int size_of_population = 10; //Размер популяции
+	int max_number_of_populations = 4;  //Макс число поколений
+	int type_of_selection = 1;  //Тип селекции      0=prop; 1=rang; 2=tour;
+	int size_of_tour = 5; //Размер турнира для турнирной селекции
+	int type_of_crossover = 0; //Тип скрещивания     0- стандартное 1-одноточечное
+	int type_of_mutation = 0;
+	int max_deep = 5;
+	int dimension = n_var;
+	int growth = 0;
+	double probability_of_mutation = 5 / 100.;  //Вероятность мутации
+	double accuracy = 0.05; //Точность поиска
+	bool selfconfiguration = false; // Самонастройка true/false
+	bool cloning = 1;  //Клонирование
+	
+	gp.Init(selfconfiguration, size_of_population, max_number_of_populations, type_of_selection, size_of_tour, type_of_crossover, max_deep, dimension, growth, type_of_mutation, probability_of_mutation, inheriters);
+
+	gp.Start_fast(false);
+
+	for (int i = 0; i < gp.Get_stats().size(); i++)
+	{
+		cout << gp.Get_stats()[i][1] << endl;
+	}
+
+	cout << gp.Get_formula() << endl;
+	cout << gp.Get_fitness() << endl;
+	cout << gp.Get_deep() << endl;
+
+	/*TTree_symbolic Tree;
 	Tree.Init(4, 7, 0, 2);
 
 	TTest test;
 	test.Calculate(Tree);
 	cout << Tree.Get_formula() << endl << test.Get_meanresult() << endl << test.Get_reliability() << endl<<test.Get_meanx()<<endl;
+	cout << "--" << endl;
+	test.Calculate(Tree);
+	cout << Tree.Get_formula() << endl << test.Get_meanresult() << endl << test.Get_reliability() << endl << test.Get_meanx() << endl;
+	cout << "--" << endl;
+	test.Calculate(Tree);
+	cout << Tree.Get_formula() << endl << test.Get_meanresult() << endl << test.Get_reliability() << endl << test.Get_meanx() << endl;
 	//regress();
-	/*
+	
 	Tree.Calculate_fitness();
 	cout<< Tree.Get_formula()<<endl<<Tree.Get_fitness()<<endl;
 

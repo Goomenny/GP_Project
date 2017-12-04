@@ -168,7 +168,47 @@ int TGp_fuzzy::Start_fast(TFuzzy& fuzzy, bool restart) {
 	else
 		return 0;
 }
-/*
+
+
+
+void TGp_DE::Init(bool selfconfiguration, int size_of_population, int max_number_of_populations, int type_of_selection, int size_of_tour, int type_of_crossover, int max_deep, int dimension, int growth, int type_of_mutation, double probability_of_mutation, int inheriters) {
+	first_solution = 0;
+	found = false;
+
+	//Резервируем память для массивов с примененными операторами
+	this->type_of_selection.reserve(size_of_population);
+	this->size_of_tour.reserve(size_of_population);
+	this->type_of_crossover.reserve(size_of_population);
+	this->type_of_mutation.reserve(size_of_population);
+
+	if (!selfconfiguration) {
+		for (int i = 0; i < size_of_population; i++) {
+			this->type_of_selection.push_back(type_of_selection);
+			this->size_of_tour.push_back(size_of_tour);
+			this->type_of_crossover.push_back(type_of_crossover);
+			this->type_of_mutation.push_back(type_of_mutation);
+		}
+	}
+	// Записываем остальные настройки
+	this->selfconfiguration = selfconfiguration;
+	this->size_of_population = size_of_population;
+	this->max_number_of_populations = max_number_of_populations;
+	this->dimension = dimension;
+	this->probability_of_crossover = probability_of_crossover;
+	this->probability_of_mutation = probability_of_mutation;
+
+
+	this->max_deep = max_deep;
+	this->dimension = dimension;
+	this->growth = growth;
+	this->inheriters = inheriters;
+	//Случайно инициализируем первое поколение
+	last_population.Init(size_of_population);
+	last_population.Init_randomly_tree(max_deep, dimension, growth, inheriters);
+	//Инициализируем место для следующиего поколения
+	new_population.Init(size_of_population);
+
+}
 //---------------------------------------------------------------------------
 double TGp_DE::Get_value(double *var) {
 	return last_population.Get_best_value(var);
@@ -245,4 +285,3 @@ int TGp_DE::Start_fast(bool restart) {
 
 
 }
-*/

@@ -54,10 +54,10 @@ void TGp <Population> ::Init(bool selfconfiguration, int num_func, int size_of_p
 	this->num_func = num_func;
 
 	//Резервируем память для массивов с примененными операторами
-	this->type_of_selection.resize(size_of_population);
-	this->size_of_tour.resize(size_of_population);
-	this->type_of_crossover.resize(size_of_population);
-	this->type_of_mutation.resize(size_of_population);
+	this->type_of_selection.reserve(size_of_population);
+	this->size_of_tour.reserve(size_of_population);
+	this->type_of_crossover.reserve(size_of_population);
+	this->type_of_mutation.reserve(size_of_population);
 
 	if (!selfconfiguration) {
 		for (int i = 0; i < size_of_population; i++) {

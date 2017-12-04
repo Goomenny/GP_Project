@@ -1,14 +1,12 @@
 ﻿#pragma once
 #include "HarrixMathLibrary.h"
-#include "TTree.h"
 #include "DIFFEVO.h"
-#include <iostream>
-using namespace std;
-
+template <class Tree>
 class TTest
 {
 public:
-	void Calculate( TTree_symbolic &tree);
+	
+	void Calculate(Tree &tree);
 
 	double Get_reliability() { return reliability; };
 	double Get_meanresult() { return meanresult; };
@@ -16,7 +14,7 @@ public:
 
 private:
 	TDE optimizer;
-	int runs = 100;
+	int runs = 50;
 	double eps = 0.01;
 
 	double reliability = 0;
@@ -27,8 +25,8 @@ private:
 	double bias[3]; //Вектор смещений оптимума
 
 };
-
-void TTest::Calculate( TTree_symbolic &tree) {
+template <class Tree>
+void TTest<Tree>::Calculate( Tree &tree) {
 	
 	bool found = false;
 	double *x;
@@ -40,7 +38,6 @@ void TTest::Calculate( TTree_symbolic &tree) {
 
 	for (int i = 0; i < runs; i++)
 	{
-
 		for (int d = 0; d < D; d++)
 		{
 			bias[d] = (rand() % 10001) / 1000. - 5;

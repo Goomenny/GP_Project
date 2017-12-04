@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "TPopulation.h"
 #include "TemplateGP.h"
 
@@ -29,7 +29,7 @@ public:
 
 
 };
-/*
+
 class TGp_DE: public TGp<TPopulation_DE>
 {
 
@@ -37,9 +37,8 @@ public:
 
 	int Start_fast(bool);
 	string Get_formula();
-
+	void Init(bool, int, int, int, int, int, int, int, int, int, double, int);  //Инициализация
 	double Get_value(double *);
 
 
 };
-*/

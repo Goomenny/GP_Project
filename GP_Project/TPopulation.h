@@ -1,7 +1,7 @@
 #pragma once
 #include "TTree.h"
 #include "TemplatePopulation.h"
-
+#include "Functions.h"
 #include "TFuzzy.h"
 
 class TPopulation_symbolic : public TPopulation<TTree_symbolic> {

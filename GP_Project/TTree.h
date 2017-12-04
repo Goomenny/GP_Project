@@ -2,8 +2,6 @@
 #include "math.h"
 #include "TNode.h"
 #include "TemplateTree.h"
-//#include "Functions.h"
-//#include "DIFFEVO.h"
 #include "TFuzzy.h"
 class TTree_symbolic : public TTree<TNode_DE>
 {
@@ -29,6 +27,7 @@ public:
 	//DE
 	void Calculate_fitness(); //Вычислить пригодность дерева
 	double Get_meanresult() { return meanresult; };
+	void Set_fitness(double newfitness) { fitness = newfitness; };
 
 };
 
