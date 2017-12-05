@@ -176,17 +176,17 @@ void TGp_DE::Init(bool selfconfiguration, int size_of_population, int max_number
 	found = false;
 
 	//Резервируем память для массивов с примененными операторами
-	this->type_of_selection.reserve(size_of_population);
-	this->size_of_tour.reserve(size_of_population);
-	this->type_of_crossover.reserve(size_of_population);
-	this->type_of_mutation.reserve(size_of_population);
+	this->type_of_selection.resize(size_of_population);
+	this->size_of_tour.resize(size_of_population);
+	this->type_of_crossover.resize(size_of_population);
+	this->type_of_mutation.resize(size_of_population);
 
 	if (!selfconfiguration) {
 		for (int i = 0; i < size_of_population; i++) {
-			this->type_of_selection.push_back(type_of_selection);
-			this->size_of_tour.push_back(size_of_tour);
-			this->type_of_crossover.push_back(type_of_crossover);
-			this->type_of_mutation.push_back(type_of_mutation);
+			this->type_of_selection[i]=type_of_selection;
+			this->size_of_tour[i]=size_of_tour;
+			this->type_of_crossover[i]=type_of_crossover;
+			this->type_of_mutation[i]=type_of_mutation;
 		}
 	}
 	// Записываем остальные настройки
@@ -252,6 +252,12 @@ int TGp_DE::Start_fast(bool restart) {
 		tmp.push_back(last_population.Get_best_fitness());
 		fitness.push_back(tmp);
 
+		if (last_population.Get_best_fitness() ==1&&found == false)
+		{
+			first_solution = i;
+			found = true;
+			break;
+		}
 
 		if (i<max_number_of_populations) {
 

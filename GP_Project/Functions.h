@@ -43,8 +43,8 @@ void TTest<Tree>::Calculate( Tree &tree) {
 			bias[d] = (rand() % 10001) / 1000. - 5;
 		}
 
-		optimizer.Init(HML_TestFunction_ParaboloidOfRevolution,bias);
-		result = optimizer.Start_fast(HML_TestFunction_ParaboloidOfRevolution,bias,tree);
+		optimizer.Init(HML_TestFunction_Rosenbrock,bias);
+		result = optimizer.Start_fast(HML_TestFunction_Rosenbrock,bias,tree);
 
 		meanresult += fabs(result);
 

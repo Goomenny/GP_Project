@@ -200,19 +200,18 @@ int main() {
 	int n_var = 7;
 
 	int inheriters = 2;
-	int size_of_population = 10; //Размер популяции
-	int max_number_of_populations = 4;  //Макс число поколений
+	int size_of_population = 20; //Размер популяции
+	int max_number_of_populations = 20;  //Макс число поколений
 	int type_of_selection = 1;  //Тип селекции      0=prop; 1=rang; 2=tour;
 	int size_of_tour = 5; //Размер турнира для турнирной селекции
 	int type_of_crossover = 0; //Тип скрещивания     0- стандартное 1-одноточечное
 	int type_of_mutation = 0;
-	int max_deep = 5;
+	int max_deep = 7;
 	int dimension = n_var;
-	int growth = 0;
+	int growth = 1; // 0- Полный рост 1- неполный
 	double probability_of_mutation = 5 / 100.;  //Вероятность мутации
 	double accuracy = 0.05; //Точность поиска
-	bool selfconfiguration = false; // Самонастройка true/false
-	bool cloning = 1;  //Клонирование
+	bool selfconfiguration = true; // Самонастройка true/false
 	
 	gp.Init(selfconfiguration, size_of_population, max_number_of_populations, type_of_selection, size_of_tour, type_of_crossover, max_deep, dimension, growth, type_of_mutation, probability_of_mutation, inheriters);
 
