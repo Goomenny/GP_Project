@@ -193,15 +193,15 @@ void fuzzy() {
 }
 int main() {
 	srand(time(NULL));
-
+	
 	TGp_DE gp;
 
 
 	int n_var = 7;
 
 	int inheriters = 2;
-	int size_of_population = 20; //Размер популяции
-	int max_number_of_populations = 20;  //Макс число поколений
+	int size_of_population = 5; //Размер популяции
+	int max_number_of_populations = 3;  //Макс число поколений
 	int type_of_selection = 1;  //Тип селекции      0=prop; 1=rang; 2=tour;
 	int size_of_tour = 5; //Размер турнира для турнирной селекции
 	int type_of_crossover = 0; //Тип скрещивания     0- стандартное 1-одноточечное
@@ -225,30 +225,51 @@ int main() {
 	cout << gp.Get_formula() << endl;
 	cout << gp.Get_fitness() << endl;
 	cout << gp.Get_deep() << endl;
+	
+	/*
+	TTree_symbolic Tree[5];
+	for (int i = 0; i < 5; i++)
+	{
+		Tree[i].Init(4, 7, 0, 2);
+	}
 
-	/*TTree_symbolic Tree;
-	Tree.Init(4, 7, 0, 2);
 
-	TTest test;
-	test.Calculate(Tree);
-	cout << Tree.Get_formula() << endl << test.Get_meanresult() << endl << test.Get_reliability() << endl<<test.Get_meanx()<<endl;
-	cout << "--" << endl;
+	for (int j = 0; j < 3; j++)
+	{
+		#pragma omp parallel for
+		for (int i = 0; i < 5; i++)
+		{
+			//for (int  j = 0; j < 2; j++)
+
+			TTest<TTree_symbolic> test;
+			test.Calculate(Tree[i]);
+			cout << Tree.Get_formula() << endl << test.Get_meanresult() << endl << test.Get_reliability() << endl << test.Get_meanx() << endl;
+			//cout << "--" << endl;
+
+
+		}
+
+		cout << "-----" << endl;
+	}
+	*/
+	/*
 	test.Calculate(Tree);
 	cout << Tree.Get_formula() << endl << test.Get_meanresult() << endl << test.Get_reliability() << endl << test.Get_meanx() << endl;
 	cout << "--" << endl;
 	test.Calculate(Tree);
 	cout << Tree.Get_formula() << endl << test.Get_meanresult() << endl << test.Get_reliability() << endl << test.Get_meanx() << endl;
+	*/
 	//regress();
 	
-	Tree.Calculate_fitness();
-	cout<< Tree.Get_formula()<<endl<<Tree.Get_fitness()<<endl;
+	//Tree.Calculate_fitness();
+	//cout<< Tree.Get_formula()<<endl<<Tree.Get_fitness()<<endl;
 
 	//cout<<optimizer.Start_fast(HML_TestFunction_Griewangk, Tree);
 
-	double var[7]{ 0,1,1,3,4,5,6 };
+	//double var[7]{ 0,1,1,3,4,5,6 };
 
-	cout<<Tree.Get_result(var)<<endl;
-	*/
+	//cout<<Tree.Get_result(var)<<endl;
+	
 	system("pause");
 	return 0;
 }

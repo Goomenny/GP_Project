@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "HarrixMathLibrary.h"
 #include "DIFFEVO.h"
+#include <random>  
 template <class Tree>
 class TTest
 {
@@ -35,12 +36,16 @@ void TTest<Tree>::Calculate( Tree &tree) {
 	meanx = 0;
 	reliability = 0;
 	meanresult = 0;
-
+	
 	for (int i = 0; i < runs; i++)
 	{
+		std::mt19937 gen(i);
+		std::uniform_real_distribution<> urd(-5, 5);
+		
 		for (int d = 0; d < D; d++)
 		{
-			bias[d] = (rand() % 10001) / 1000. - 5;
+			bias[d] = urd(gen);
+			//bias[d] = (rand() % 10001) / 1000. - 5;
 		}
 
 		optimizer.Init(HML_TestFunction_Rosenbrock,bias);

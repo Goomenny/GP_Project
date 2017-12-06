@@ -62,21 +62,21 @@ double rnd_uni(long * idum)
 void TDE::Init(double(*evaluate)(double[], double*, int,  long *),double *bias)
 {
 
-	strategy = 11;     // choice of strategy
-	genmax = 200;         // maximum number of generations
+	strategy = 1;     // choice of strategy
+	genmax = 50;         // maximum number of generations
 	refresh = 50;        // output refresh cycle
 	D = 3;             // number of parameters
-	NP = 50;             // population size.
+	NP = 20;             // population size.
 	inibound_h = 10.;     // upper parameter bound for init
 	inibound_l = -10.;     // lower parameter bound for init
 	F=0.75;              // weight factor
 	CR=1.;             // crossing over factor
-	seed= rand()%RAND_MAX;           // random seed 
+	seed= 3;           // random seed 
 
 	rnd_uni_init = -(long)seed;  // initialization of rnd_uni() 
 	nfeval = 0;           // reset number of function evaluations 
-	
-
+	randeng.seed(0);
+	uniform_real_distribution<> urd(0,1);
 	// Initialization
 	// Right now this part is kept fairly simple and just generates
 	// random numbers in the range [-initfac, +initfac]. You might
@@ -86,7 +86,7 @@ void TDE::Init(double(*evaluate)(double[], double*, int,  long *),double *bias)
 	// spread initial population members
 	for (i = 0; i<NP; i++) {
 		for (j = 0; j<D; j++) {
-			r = rnd_uni(&rnd_uni_init);
+			r = urd(randeng);
 			c[i][j] = inibound_l + r*(inibound_h - inibound_l);
 		}
 
@@ -133,7 +133,7 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 	CopyArray(oldarray, c);
 	// new population (generation G+1)
 	CopyArray(newarray, d);
-
+	uniform_real_distribution<> urd(0, 1);
 	// Iteration loop
 	gen = 0; // generation counter reset
 	while ((gen < genmax)) {
@@ -144,29 +144,29 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 			// Pick a random population member 
 			do {
 				// Endless loop for NP < 2 !!!
-				r = rnd_uni(&rnd_uni_init);
+				r = urd(randeng);
 				r1 = (int)(r*NP);
 			} while (r1 == i);
 
 			do {
 				// Endless loop for NP < 3 !!!
-				r = rnd_uni(&rnd_uni_init);
+				r = urd(randeng);
 				r2 = (int)(r*NP);
 			} while ((r2 == i) || (r2 == r1));
 
 			do {
 				// Endless loop for NP < 4 !!!     
-				r3 = (int)(rnd_uni(&rnd_uni_init)*NP);
+				r3 = (int)(urd(randeng)*NP);
 			} while ((r3 == i) || (r3 == r1) || (r3 == r2));
 
 			do {
 				// Endless loop for NP < 5 !!!     
-				r4 = (int)(rnd_uni(&rnd_uni_init)*NP);
+				r4 = (int)(urd(randeng)*NP);
 			} while ((r4 == i) || (r4 == r1) || (r4 == r2) || (r4 == r3));
 
 			do {
 				// Endless loop for NP < 6 !!!     
-				r5 = (int)(rnd_uni(&rnd_uni_init)*NP);
+				r5 = (int)(urd(randeng)*NP);
 			} while ((r5 == i) || (r5 == r1) || (r5 == r2) || (r5 == r3) || (r5 == r4));
 
 			// Choice of strategy
@@ -195,13 +195,13 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				L = 0;
 				do {
 					tmp[n] = bestit[n] + F*(oldarray[r2][n] - oldarray[r3][n]);
 					n = (n + 1) % D;
 					L++;
-				} while ((rnd_uni(&rnd_uni_init) < CR) && (L < D));
+				} while ((urd(randeng) < CR) && (L < D));
 			}
 			// DE/rand/1/exp
 			// This is one of my favourite strategies. It works especially well when the
@@ -212,13 +212,13 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				L = 0;
 				do {
 					tmp[n] = oldarray[r1][n] + F*(oldarray[r2][n] - oldarray[r3][n]);
 					n = (n + 1) % D;
 					L++;
-				} while ((rnd_uni(&rnd_uni_init) < CR) && (L < D));
+				} while ((urd(randeng) < CR) && (L < D));
 			}
 			// DE/rand-to-best/1/exp
 			// This strategy seems to be one of the best strategies. Try F=0.85 and CR = 1.0
@@ -229,39 +229,39 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				L = 0;
 				do {
 					tmp[n] = tmp[n] + F*(bestit[n] - tmp[n]) + F*(oldarray[r1][n] - oldarray[r2][n]);
 					n = (n + 1) % D;
 					L++;
-				} while ((rnd_uni(&rnd_uni_init) < CR) && (L < D));
+				} while ((urd(randeng) < CR) && (L < D));
 			}
 			// DE/best/2/exp is another powerful strategy worth trying
 			else if (strategy == 4) {
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				L = 0;
 				do {
 					tmp[n] = bestit[n] + (oldarray[r1][n] + oldarray[r2][n] - oldarray[r3][n] - oldarray[r4][n])*F;
 					n = (n + 1) % D;
 					L++;
-				} while ((rnd_uni(&rnd_uni_init) < CR) && (L < D));
+				} while ((urd(randeng) < CR) && (L < D));
 			}
 			// DE/rand/2/exp seems to be a robust optimizer for many functions
 			else if (strategy == 5) {
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				L = 0;
 				do {
 					tmp[n] = oldarray[r5][n] + (oldarray[r1][n] + oldarray[r2][n] - oldarray[r3][n] - oldarray[r4][n])*F;
 					n = (n + 1) % D;
 					L++;
-				} while ((rnd_uni(&rnd_uni_init) < CR) && (L < D));
+				} while ((urd(randeng) < CR) && (L < D));
 			}
 			// Essentially same strategies but BINOMIAL CROSSOVER
 			// DE/best/1/bin
@@ -269,11 +269,11 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				// perform D binomial trials
 				for (L = 0; L<D; L++) {
 					// change at least one parameter
-					if ((rnd_uni(&rnd_uni_init) < CR) || L == (D - 1)) {
+					if ((urd(randeng) < CR) || L == (D - 1)) {
 						tmp[n] = bestit[n] + F*(oldarray[r2][n] - oldarray[r3][n]);
 					}
 					n = (n + 1) % D;
@@ -284,11 +284,11 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				// perform D binomial trials */
 				for (L = 0; L<D; L++) {
 					// change at least one parameter
-					if ((rnd_uni(&rnd_uni_init) < CR) || L == (D - 1)) {
+					if ((urd(randeng) < CR) || L == (D - 1)) {
 						tmp[n] = oldarray[r1][n] + F*(oldarray[r2][n] - oldarray[r3][n]);
 					}
 					n = (n + 1) % D;
@@ -299,9 +299,9 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				for (L = 0; L<D; L++) {
-					if ((rnd_uni(&rnd_uni_init) < CR) || L == (D - 1)) {
+					if ((urd(randeng) < CR) || L == (D - 1)) {
 						tmp[n] = tmp[n] + F*(bestit[n] - tmp[n]) + F*(oldarray[r1][n] - oldarray[r2][n]);
 					}
 					n = (n + 1) % D;
@@ -312,9 +312,9 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				for (L = 0; L<D; L++) {
-					if ((rnd_uni(&rnd_uni_init) < CR) || L == (D - 1)) {
+					if ((urd(randeng) < CR) || L == (D - 1)) {
 						tmp[n] = bestit[n] + (oldarray[r1][n] + oldarray[r2][n] - oldarray[r3][n] - oldarray[r4][n])*F;
 					}
 					n = (n + 1) % D;
@@ -325,9 +325,9 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				for (L = 0; L<D; L++) {
-					if ((rnd_uni(&rnd_uni_init) < CR) || L == (D - 1)) {
+					if ((urd(randeng) < CR) || L == (D - 1)) {
 						tmp[n] = oldarray[r5][n] + (oldarray[r1][n] + oldarray[r2][n] - oldarray[r3][n] - oldarray[r4][n])*F;
 					}
 					n = (n + 1) % D;
@@ -337,7 +337,7 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
-				n = (int)(rnd_uni(&rnd_uni_init)*D);
+				n = (int)(urd(randeng)*D);
 				for (L = 0; L<D; L++) {
 					vars[0] = tmp[n];
 					vars[1] = oldarray[imin][n];
@@ -346,7 +346,7 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 					vars[4] = oldarray[r3][n];
 					vars[5] = oldarray[r4][n];
 					vars[6] = oldarray[r5][n];
-					if ((rnd_uni(&rnd_uni_init) < CR) || L == (D - 1)) {
+					if ((urd(randeng) < CR) || L == (D - 1)) {
 						tmp[n] = tree.Get_result(vars);
 						//tmp[n] = tmp[n] + F*(bestit[n] - tmp[n]) + F*(oldarray[r1][n] - oldarray[r2][n]);
 					}

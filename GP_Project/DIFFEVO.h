@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include "TTree.h"
+#include <random> 
 #define MAXPOP  500
 #define MAXDIM  35
 #define IM1 2147483563
@@ -46,6 +47,9 @@ private:
 	double vars[7];
 
 	double r;
+
+	mt19937 randeng;
+	
 
 public:
 	void Init(double(*evaluate)(double[], double *, int, long *), double *bias);

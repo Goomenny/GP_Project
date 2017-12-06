@@ -27,11 +27,12 @@ vector< vector<int> > TPopulation_fuzzy::Get_best_rules()
 
 void TPopulation_DE::Calculate_fitness() {
 
-	TTest<TTree_symbolic> test;
+	
 	#pragma omp parallel for
 	for (int i = 0; i < size_of_population; i++) {
+		TTest<TTree_symbolic> test;
 		test.Calculate(tree[i]);
-		tree[i].Set_fitness(1./(1.+test.Get_meanresult()));
+		tree[i].Set_fitness(1./(1.+test.Get_meanx()));
 	}
 	#pragma omp barrier 
 }
