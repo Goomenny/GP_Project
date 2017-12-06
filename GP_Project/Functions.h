@@ -45,7 +45,6 @@ void TTest<Tree>::Calculate( Tree &tree) {
 		for (int d = 0; d < D; d++)
 		{
 			bias[d] = urd(gen);
-			//bias[d] = (rand() % 10001) / 1000. - 5;
 		}
 
 		optimizer.Init(HML_TestFunction_Rosenbrock,bias);

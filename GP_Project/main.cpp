@@ -200,8 +200,8 @@ int main() {
 	int n_var = 7;
 
 	int inheriters = 2;
-	int size_of_population = 5; //Размер популяции
-	int max_number_of_populations = 3;  //Макс число поколений
+	int size_of_population = 10; //Размер популяции
+	int max_number_of_populations = 2;  //Макс число поколений
 	int type_of_selection = 1;  //Тип селекции      0=prop; 1=rang; 2=tour;
 	int size_of_tour = 5; //Размер турнира для турнирной селекции
 	int type_of_crossover = 0; //Тип скрещивания     0- стандартное 1-одноточечное

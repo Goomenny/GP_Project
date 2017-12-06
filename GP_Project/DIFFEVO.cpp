@@ -62,11 +62,11 @@ double rnd_uni(long * idum)
 void TDE::Init(double(*evaluate)(double[], double*, int,  long *),double *bias)
 {
 
-	strategy = 1;     // choice of strategy
-	genmax = 50;         // maximum number of generations
+	strategy = 2;     // choice of strategy
+	genmax = 200;         // maximum number of generations
 	refresh = 50;        // output refresh cycle
 	D = 3;             // number of parameters
-	NP = 20;             // population size.
+	NP = 50;             // population size.
 	inibound_h = 10.;     // upper parameter bound for init
 	inibound_l = -10.;     // lower parameter bound for init
 	F=0.75;              // weight factor
@@ -333,7 +333,7 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 					n = (n + 1) % D;
 				}
 			}
-			else {
+			else if (strategy == 11) {
 				for (int k = 0; k<MAXDIM; k++) {
 					tmp[k] = oldarray[i][k];
 				}
@@ -353,6 +353,19 @@ double TDE::Start_fast(double(*evaluate)(double[], double *, int,  long *), doub
 					n = (n + 1) % D;
 				}
 			}
+			else {
+				for (int k = 0; k<MAXDIM; k++) {
+					tmp[k] = oldarray[i][k];
+				}
+				n = (int)(urd(randeng)*D);
+				L = 0;
+				do {
+					tmp[n] = tree.Get_result(vars);
+					n = (n + 1) % D;
+					L++;
+				} while ((urd(randeng) < CR) && (L < D));
+			}
+			
 
 			// Trial mutation now in tmp[]. Test how good this choice really was.
 			trial_energy = evaluate(tmp, bias, D, &nfeval);  // Evaluate new vector in tmp[]

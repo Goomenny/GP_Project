@@ -43,13 +43,6 @@ string TTree_symbolic::Get_formula() {
 inline double TTree_symbolic::Get_result(double *gvar) {
 	return node[0][0].Get_result(gvar);
 }
-void TTree_symbolic::Calculate_fitness()
-{
-	//test.Calculate(this);
-
-	//fitness = test.Get_reliability();
-	//meanresult = test.Get_meanresult();
-}
 void TTree_symbolic::Mutate(int type_of_mutation, double probability_of_mutation) {
 	double ran = 0;
 	int last_func = 0;
@@ -296,6 +289,84 @@ void TTree_fuzzy::Mutate(int type_of_mutation, double probability_of_mutation) {
 	}
 }
 //---------------------------------------------------------------------------
+/*
+
+TTree_DE::TTree_DE() {
+	meanresult = 0;
+
+}
+//---------------------------------------------------------------------------
+
+TTree_DE::~TTree_DE() {
+
+}
+//---------------------------------------------------------------------------
+
+TTree_DE::TTree_DE(const TTree_DE &other) {
+
+
+	this->meanresult = other.meanresult;
+}
+//---------------------------------------------------------------------------
+/*TTree_DE& TTree_DE::operator=(const TTree_DE &other) {//перегрузка оператора присваивания
+
+if (this == &other)
+return *this; // присвоение самому себе, ничего делать не надо
+
+this->meanresult  = other.meanresult ;
+
+return *this;
+}
+//---------------------------------------------------------------------------
+
+string TTree_DE::Get_formula() {
+	return node[0][0].Get_formula(node[0][0].Get_symbol());
+}
+inline double TTree_DE::Get_result(double *gvar) {
+	return node[0][0].Get_result(gvar);
+}
+void TTree_DE::Mutate(int type_of_mutation, double probability_of_mutation) {
+	double ran = 0;
+	int last_func = 0;
+	int a[3] = { 0,1,2 }, b[1] = { 3 };
+	switch (type_of_mutation) {
+	case 0:
+		probability_of_mutation = 1. / (5 * deep);
+		break;
+	case 1:
+		probability_of_mutation = 1. / deep;
+		break;
+	case 2:
+		probability_of_mutation = 5. / deep;
+		break;
+	case 3:
+		break;
+	}
+	for (int i = 0; i < deep; i++) {
+		for (int j = 0; j < n_node[i]; j++) {
+			if (node[i][j].Get_type()) {
+				last_func = node[i][j].Get_func();
+				ran = rand() % 100001;
+				ran /= 100000.;
+				if (probability_of_mutation>ran) {
+
+					while (node[i][j].Get_func() == last_func) {
+						if (last_func != 3) {
+							node[i][j].Set_func(a[rand() % 3]);
+						}
+						else {
+							node[i][j].Set_func(b[rand() % 1]);
+						}
+					}
+
+					node[i][j].Set_symbol(node[i][j].Get_func());
+				}
+			}
+		}
+	}
+}*/
+//---------------------------------------------------------------------------
+
 double Func(double *var, int num_func) {
 
 	switch (num_func) {
